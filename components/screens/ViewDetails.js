@@ -24,19 +24,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { restaurants } from "../../api/Rstaurants";
 import { ScrollView } from "react-native-gesture-handler";
 import DatePickers from "../DatePickers";
-
-//const image = require("../../assets/burger.jpg");
+import Counter from "../Counter";
+import { Provider } from "react-redux";
+import store from "../store";
+import { ListItem } from "react-native-elements/dist/list/ListItem";
 
 export default class ViewDetails extends React.Component<Props> {
-  state = {
-    isVisible: false,
-  };
   constructor(props) {
     super(props);
-    //   { id, name, location, hours, description, serviceOption, image } = this.props.params;
-  }
-  displayModal(show) {
-    this.setState({ isVisible: show });
   }
 
   render() {
@@ -45,190 +40,6 @@ export default class ViewDetails extends React.Component<Props> {
 
     return (
       <View style={globalStyles.container}>
-        <View style={globalStyles.centeredView}>
-          {/**Modal */}
-          <Modal
-            animationType={"slide"}
-            transparent={false}
-            visible={this.state.isVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              // this.setState(!this.state.modalVisible);
-            }}
-          >
-            <ScrollView>
-              <View
-                style={{
-                  backgroundColor: "#32AFB7",
-                  marginTop: 100,
-                  height: 800,
-                  borderRadius: 20,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    this.displayModal(!this.state.isVisible);
-                  }}
-                >
-                  <AntDesign
-                    name="closecircle"
-                    size={24}
-                    color="white"
-                    style={{ padding: 24 }}
-                  />
-                </TouchableOpacity>
-                <Text style={globalStyles.headerText}>Reservation</Text>
-                <KeyboardAvoidingView
-                  behavior={Platform.OS === "ios" ? "padding" : "height"}
-                >
-                  <View style={{ flexDirection: "row", padding: 24 }}>
-                    <AntDesign name="user" size={34} color="white" />
-                    <TextInput
-                      placeholder="Name and Surname"
-                      //onChangeText={this.updateSearch}
-                      // value={search}
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "white",
-                        width: 250,
-                        marginHorizontal: 5,
-                        marginVertical: -2,
-                      }}
-                    ></TextInput>
-                  </View>
-                  <View style={{ flexDirection: "row", padding: 24 }}>
-                    <MaterialCommunityIcons
-                      name="email"
-                      size={34}
-                      color="white"
-                    />
-                    <TextInput
-                      placeholder="address@address.com"
-                      //onChangeText={this.updateSearch}
-                      // value={search}
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "white",
-                        width: 250,
-                        marginHorizontal: 5,
-                      }}
-                    ></TextInput>
-                  </View>
-                  <View style={{ flexDirection: "row", padding: 24 }}>
-                    <FontAwesome name="phone-square" size={34} color="white" />
-                    <TextInput
-                      placeholder="Phone no.: (+27) 0"
-                      //onChangeText={this.updateSearch}
-                      // value={search}
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "white",
-                        width: 120,
-                        marginHorizontal: 5,
-                      }}
-                      keyboardType="phone-pad"
-                    ></TextInput>
-                  </View>
-                  <View style={{ flexDirection: "row", padding: 24 }}>
-                    <FontAwesome5
-                      name="clipboard-list"
-                      size={34}
-                      color="white"
-                    />
-                    <TextInput
-                      placeholder="No. of Guests"
-                      //onChangeText={this.updateSearch}
-                      // value={search}
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "white",
-                        width: 120,
-                        marginHorizontal: 5,
-                      }}
-                      keyboardType="phone-pad"
-                    ></TextInput>
-                  </View>
-                  <View style={{ flexDirection: "row", padding: 24 }}>
-                    <Ionicons name="ios-time" size={34} color="white" />
-                    <TextInput
-                      placeholder="Time-in"
-                      //onChangeText={this.updateSearch}
-                      // value={search}
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "white",
-                        width: 120,
-                        marginHorizontal: 5,
-                      }}
-                      keyboardType="phone-pad"
-                    />
-                    <TextInput
-                      placeholder="Time-out"
-                      //onChangeText={this.updateSearch}
-                      // value={search}
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "black",
-                        width: 120,
-                        marginHorizontal: 10,
-                      }}
-                      keyboardType="phone-pad"
-                    />
-                  </View>
-                  <View style={{ flexDirection: "row", padding: 24 }}>
-                    <MaterialIcons name="date-range" size={34} color="white" />
-                    <DatePickers
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "black",
-                        height: 40,
-                        color: "white",
-                        width: 120,
-                        marginHorizontal: 5,
-                      }}
-                    />
-                  </View>
-                  <View style={globalStyles.confirmButton}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        return (
-                          <View>
-                            <Text>successfull</Text>
-                          </View>
-                        );
-                      }}
-                    >
-                      <Text
-                        style={{
-                          alignSelf: "center",
-                          fontWeight: "400",
-                          marginVertical: 15,
-                          fontSize: 24,
-                          color: "black",
-                        }}
-                      >
-                        Book now
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </KeyboardAvoidingView>
-              </View>
-            </ScrollView>
-          </Modal>
-        </View>
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity onPress={() => navigate("HomeScreen")}>
@@ -307,12 +118,28 @@ export default class ViewDetails extends React.Component<Props> {
             showsHorizontalScrollIndicator={false}
             style={{ flexDirection: "row", marginVertical: 35 }}
           >
-            <Image source={{ uri: image }} style={globalStyles.imagesList} />
-            <Image source={{ uri: image }} style={globalStyles.imagesList} />
-            <Image source={{ uri: image }} style={globalStyles.imagesList} />
+            <FlatList
+              data={menu}
+              keyExtractor={(_, key) => key.toString()}
+              renderItem={({ item }) => {
+                <Image
+                  source={{ uri: { item } }}
+                  style={globalStyles.imagesList}
+                />;
+              }}
+            />
+            {/* <Image source={{ uri: image }} style={globalStyles.imagesList} />
+            <Image source={{ uri: image }} style={globalStyles.imagesList} />*/}
           </ScrollView>
           <View style={globalStyles.confirmButton}>
-            <TouchableOpacity onPress={() => this.displayModal(true)}>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("PreviewBooking", {
+                  restoName: name,
+                  locate: location,
+                })
+              }
+            >
               <Text
                 style={{
                   alignSelf: "center",

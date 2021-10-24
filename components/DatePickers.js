@@ -1,45 +1,64 @@
 import React, { useState } from "react";
-
-// import all the components we are going to use
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-
-//import DatePicker from the package we installed
-import DatePicker from "react-native-datepicker";
+import { Button, View, StyleSheet, Platform } from "react-native";
+//import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const DatePickers = () => {
-  const [date, setDate] = useState(new Anima());
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <DatePicker
-          style={styles.datePickerStyle}
-          date={date} //initial date from state
-          mode="date" //The enum of date, datetime and time
-          placeholder="select date"
-          format="DD-MM-YYYY"
-          minDate="10-10-2021"
-          maxDate="21-10-2021"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              //display: 'none',
-              position: "absolute",
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-            },
-            dateInput: {
-              marginLeft: 36,
-            },
-          }}
-          onDateChange={(date) => {
-            setDate(date);
-          }}
-        />
+    <View>
+      <View>
+        {/*<Button onPress={showDatepicker} title="Choose Date" />*/}
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+            on
+          />
+        )}
       </View>
-    </SafeAreaView>
+      <View>
+        <Button onPress={showTimepicker} title="Choose Time" />
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={() => onChange}
+            on
+          />
+        )}
+      </View>
+    </View>
   );
 };
 

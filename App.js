@@ -7,6 +7,8 @@ import HomeScreen from "./components/screens/HomeScreen";
 import UserScreen from "./components/screens/UserScreen";
 import BookingHistory from "./components/screens/BookingHistory";
 import ViewDetails from "./components/screens/ViewDetails";
+import PreviewBooking from "./components/screens/PreviewBooking";
+import ConfirmBooking from "./components/screens/ConfirmBooking";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +44,16 @@ export default class App extends Component {
             options={{
               headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name="PreviewBooking"
+            component={PreviewBooking}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ConfirmBooking"
+            component={ConfirmBooking}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
