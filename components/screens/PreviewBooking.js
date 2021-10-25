@@ -12,6 +12,7 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+import { Input } from "react-native-elements";
 import { globalStyles } from "../../styles/globalStyles";
 import {
   Ionicons,
@@ -23,10 +24,14 @@ import {
 } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import globalUserModel from "../Model";
+import DatePickers from "../DatePickers";
+//import DatePicker from "react-native-datepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default class PreviewBooking extends React.Component {
   state = {
     isVisible: false,
+    selected: new Date(),
   };
   constructor(props) {
     super(props);
@@ -35,9 +40,22 @@ export default class PreviewBooking extends React.Component {
   displayModal(show) {
     this.setState({ isVisible: show });
   }
+  handleChange = (date) => {
+    console.log("date: ", date);
+    this.setState({
+      selected: date,
+    });
+  };
   render() {
     const { restoName, locate } = this.props.route.params;
     const { navigate, goBack } = this.props.navigation;
+    const { selected } = this.state;
+
+    const onChange = (event, selectedDate) => {
+      const currentDate = selectedDate || selected;
+      this.setState({ selected: currentDate });
+      // setDate(currentDate);
+    };
 
     return (
       <View style={globalStyles.centeredView}>
@@ -45,8 +63,7 @@ export default class PreviewBooking extends React.Component {
           <View
             style={{
               backgroundColor: "#32AFB7",
-
-              height: "100%",
+              height: 630,
               borderRadius: 20,
             }}
           >
@@ -89,12 +106,11 @@ export default class PreviewBooking extends React.Component {
                   //onChangeText={this.updateSearch}
                   // value={search}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
+                    borderRadius: 6,
+                    backgroundColor: "white",
                     height: 35,
-                    color: "white",
-                    width: 250,
-                    marginHorizontal: 5,
+                    color: "black",
+                    width: 200,
                   }}
                   onChangeText={(userName) => globalUserModel.setName(userName)}
                   value={globalUserModel.userName}
@@ -114,10 +130,10 @@ export default class PreviewBooking extends React.Component {
                   //onChangeText={this.updateSearch}
                   // value={search}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
+                    borderRadius: 6,
+                    backgroundColor: "white",
                     height: 35,
-                    color: "white",
+                    color: "black",
                     width: 250,
                     marginHorizontal: 5,
                   }}
@@ -139,10 +155,10 @@ export default class PreviewBooking extends React.Component {
                   //onChangeText={this.updateSearch}
                   // value={search}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
+                    borderRadius: 6,
+                    backgroundColor: "white",
                     height: 35,
-                    color: "white",
+                    color: "black",
                     width: 120,
                     marginHorizontal: 5,
                   }}
@@ -165,10 +181,10 @@ export default class PreviewBooking extends React.Component {
                   //onChangeText={this.updateSearch}
                   // value={search}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
+                    borderRadius: 6,
+                    backgroundColor: "white",
                     height: 35,
-                    color: "white",
+                    color: "black",
                     width: 120,
                     marginHorizontal: 5,
                   }}
@@ -193,10 +209,10 @@ export default class PreviewBooking extends React.Component {
                   //onChangeText={this.updateSearch}
                   // value={search}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
+                    borderRadius: 6,
+                    backgroundColor: "white",
                     height: 35,
-                    color: "white",
+                    color: "black",
                     width: 120,
                     marginHorizontal: 5,
                   }}
@@ -209,10 +225,10 @@ export default class PreviewBooking extends React.Component {
                   //onChangeText={this.updateSearch}
                   // value={search}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
+                    borderRadius: 6,
+                    backgroundColor: "white",
                     height: 35,
-                    color: "white",
+                    color: "black",
                     width: 120,
                     marginHorizontal: 10,
                   }}
@@ -230,22 +246,18 @@ export default class PreviewBooking extends React.Component {
                 }}
               >
                 <MaterialIcons name="date-range" size={34} color="white" />
-                <TextInput
-                  multiline
-                  placeholder="Date"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
+                <DateTimePicker
+                  selected={selected}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
                   style={{
-                    borderRadius: 20,
-                    backgroundColor: "black",
-                    height: 35,
-                    color: "white",
-                    width: 120,
-                    marginHorizontal: 10,
+                    width: 100,
+                    height: 34,
+                    marginHorizontal: 5,
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: 6,
                   }}
-                  keyboardType="phone-pad"
-                  onChangeText={(date) => globalUserModel.setDate(date)}
-                  value={globalUserModel.date}
                 />
               </View>
               <View style={globalStyles.confirmBook}>
@@ -260,7 +272,7 @@ export default class PreviewBooking extends React.Component {
                       guests: globalUserModel.numberOfGuest,
                       timeIn: globalUserModel.timeIn,
                       timeOut: globalUserModel.timeOut,
-                      date: globalUserModel.date,
+                      date: selected,
                     });
                   }}
                 >

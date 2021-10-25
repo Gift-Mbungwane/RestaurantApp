@@ -4,7 +4,7 @@ import { Button, View, StyleSheet, Platform, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const DatePickers = () => {
+const TimeInPickers = () => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);

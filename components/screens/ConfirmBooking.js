@@ -9,6 +9,10 @@ import {
   FontAwesome5,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { globalStyles } from "../../styles/globalStyles";
+import { ScrollView } from "react-native-gesture-handler";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 
 export default class ConfirmBooking extends Component {
   constructor(props) {
@@ -29,7 +33,7 @@ export default class ConfirmBooking extends Component {
     } = this.props.route.params;
     const { navigate, goBack } = this.props.navigation;
     return (
-      <View>
+      <ScrollView>
         {/*   <Modal
           animationType={"slide"}
           transparent={false}
@@ -43,7 +47,7 @@ export default class ConfirmBooking extends Component {
           style={{
             borderRadius: 20,
             marginVertical: 80,
-            height: "80%",
+            height: 550,
             width: "100%",
             backgroundColor: "white",
           }}
@@ -75,26 +79,51 @@ export default class ConfirmBooking extends Component {
               color: "black",
             }}
           >
-            <Text style={{ fontSize: 40 }}>place : {name}</Text>
-            <Text> location: {location}</Text>
-            <Text>your Booking Details</Text>
-            <Text>name : {userName}</Text>
-            <Text> email address: {email}</Text>
-            <Text>Cellphone number: {cellphone}</Text>
-            <Text>Number of Guest: {guests}</Text>
-            <Text>Time-In: {timeIn}</Text>
-            <Text style={{ fontSize: 40 }}>Check-Out: {timeOut}</Text>
-            <Text style={{ fontSize: 40 }}>Date : {date}</Text>
+            <Text style={globalStyles.headerText}>{name}</Text>
+
+            <View style={{ flexDirection: "row", marginHorizontal: 15 }}>
+              <MaterialIcons name="location-pin" size={24} color="black" />
+              <Text> location: {location}</Text>
+            </View>
+            <View style={{ alignSelf: "center", marginVertical: 10 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  color: "rgba(89, 89, 89, 1)",
+                }}
+              >
+                your Booking Details
+              </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}>name : {userName}</Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}> email address: {email}</Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}>
+                Cellphone number: {cellphone}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}> {guests} Guest(s) </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}>Time-In: {timeIn}</Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}>Check-Out: {timeOut}</Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 18 }}>
+                Date : {moment(date).format("YYYY/MM/DD")}
+              </Text>
+            </View>
           </View>
           <TouchableOpacity
-            style={{
-              height: 61,
-              width: 240,
-              backgroundColor: "white",
-              borderRadius: 40,
-              position: "absolute",
-              alignSelf: "center",
-            }}
+            style={globalStyles.reviewBooked}
             onPress={() => {
               alert("you have successfully booked a take");
               // this.displayModal(false);
@@ -115,7 +144,7 @@ export default class ConfirmBooking extends Component {
           </TouchableOpacity>
         </View>
         {/*  </Modal>*/}
-      </View>
+      </ScrollView>
     );
   }
 }
