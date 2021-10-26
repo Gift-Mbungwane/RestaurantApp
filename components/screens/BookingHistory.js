@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Modal, TouchableOpacity, Text } from "react-native";
+import { color } from "react-native-elements/dist/helpers";
+import {
+  Ionicons,
+  FontAwesome,
+  AntDesign,
+  MaterialCommunityIcons,
+  FontAwesome5,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { globalStyles } from "../../styles/globalStyles";
 
 export default class BookingHistory extends Component {
@@ -8,6 +17,7 @@ export default class BookingHistory extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View style={globalStyles.container}>
         <View style={globalStyles.Tab}>

@@ -50,6 +50,7 @@ export default class ConfirmBooking extends Component {
             height: 550,
             width: "100%",
             backgroundColor: "white",
+            margin: 5,
           }}
         >
           <TouchableOpacity
@@ -58,6 +59,13 @@ export default class ConfirmBooking extends Component {
                 navigate("PreviewBooking", {
                   name: name,
                   location: location,
+                  userName: userName,
+                  email: email,
+                  cellphone: cellphone,
+                  guests: guests,
+                  timeIn: timeIn,
+                  timeOut: timeOut,
+                  date: date,
                 });
               } catch (error) {
                 errorMessage = error.message;
@@ -68,7 +76,7 @@ export default class ConfirmBooking extends Component {
             <AntDesign
               name="closecircle"
               size={24}
-              color="black"
+              color="#32AFB7"
               style={{ padding: 24 }}
             />
           </TouchableOpacity>
@@ -79,11 +87,20 @@ export default class ConfirmBooking extends Component {
               color: "black",
             }}
           >
-            <Text style={globalStyles.headerText}>{name}</Text>
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: 24,
+                fontWeight: "bold",
+                color: "rgba(89, 89, 89, 1)",
+              }}
+            >
+              {name}
+            </Text>
 
             <View style={{ flexDirection: "row", marginHorizontal: 15 }}>
-              <MaterialIcons name="location-pin" size={24} color="black" />
-              <Text> location: {location}</Text>
+              <MaterialIcons name="location-pin" size={24} color="#32AFB7" />
+              <Text style={{ width: 300 }}>{location}</Text>
             </View>
             <View style={{ alignSelf: "center", marginVertical: 10 }}>
               <Text
@@ -96,29 +113,58 @@ export default class ConfirmBooking extends Component {
                 your Booking Details
               </Text>
             </View>
-            <View>
-              <Text style={{ fontSize: 18 }}>name : {userName}</Text>
-            </View>
-            <View>
-              <Text style={{ fontSize: 18 }}> email address: {email}</Text>
-            </View>
-            <View>
-              <Text style={{ fontSize: 18 }}>
-                Cellphone number: {cellphone}
+            <View style={{ flexDirection: "row", marginHorizontal: 15 }}>
+              <AntDesign name="user" size={24} color="#32AFB7" />
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>
+                {userName}
               </Text>
             </View>
-            <View>
-              <Text style={{ fontSize: 18 }}> {guests} Guest(s) </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 15,
+                marginVertical: 5,
+              }}
+            >
+              <MaterialCommunityIcons name="email" size={24} color="#32AFB7" />
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>{email}</Text>
             </View>
-            <View>
-              <Text style={{ fontSize: 18 }}>Time-In: {timeIn}</Text>
+
+            <View style={{ flexDirection: "row", marginHorizontal: 15 }}>
+              <FontAwesome name="phone-square" size={24} color="#32AFB7" />
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>
+                {cellphone}
+              </Text>
             </View>
-            <View>
-              <Text style={{ fontSize: 18 }}>Check-Out: {timeOut}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 15,
+                marginVertical: 5,
+              }}
+            >
+              <FontAwesome5 name="clipboard-list" size={24} color="#32AFB7" />
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>
+                {guests} guest(s)
+              </Text>
             </View>
-            <View>
-              <Text style={{ fontSize: 18 }}>
-                Date : {moment(date).format("YYYY/MM/DD")}
+
+            <View style={{ flexDirection: "row", marginHorizontal: 15 }}>
+              <Ionicons name="ios-time" size={24} color="#32AFB7" />
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>
+                {timeIn}-{timeOut}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 15,
+                marginVertical: 5,
+              }}
+            >
+              <MaterialIcons name="date-range" size={24} color="#32AFB7" />
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>
+                {moment(date).format("YYYY/MM/DD")}
               </Text>
             </View>
           </View>
@@ -136,7 +182,7 @@ export default class ConfirmBooking extends Component {
                 fontWeight: "400",
                 marginVertical: 15,
                 fontSize: 24,
-                color: "black",
+                color: "white",
               }}
             >
               Confirm

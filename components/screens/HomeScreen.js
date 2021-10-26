@@ -113,7 +113,7 @@ export default class HomeScreen extends Component {
                       marginBottom: 15,
                       fontSize: 16,
                       fontWeight: "bold",
-                      width: 200,
+                      width: 160,
                       height: 19,
                       color: "rgba(89, 89, 89, 1)",
                     }}

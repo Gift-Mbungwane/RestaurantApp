@@ -21,14 +21,10 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { restaurants } from "../../api/Rstaurants";
+import { restaurants, restImages } from "../../api/Rstaurants";
 import { ScrollView } from "react-native-gesture-handler";
 import DatePickers from "../DatePickers";
-import Counter from "../Counter";
-import { Provider } from "react-redux";
-import store from "../store";
-import { ListItem } from "react-native-elements/dist/list/ListItem";
-
+import Carousel, { Pagination } from "react-native-snap-carousel";
 export default class ViewDetails extends React.Component<Props> {
   constructor(props) {
     super(props);
@@ -119,14 +115,15 @@ export default class ViewDetails extends React.Component<Props> {
             style={{ flexDirection: "row", marginVertical: 35 }}
           >
             <FlatList
-              data={menu}
-              keyExtractor={(_, key) => key.toString()}
-              renderItem={({ item }) => {
+              layout="default"
+              data={restImages}
+              renderItem={({ item, index }) => (
                 <Image
-                  source={{ uri: { item } }}
+                  key={index}
+                  source={item}
                   style={globalStyles.imagesList}
-                />;
-              }}
+                />
+              )}
             />
             {/* <Image source={{ uri: image }} style={globalStyles.imagesList} />
             <Image source={{ uri: image }} style={globalStyles.imagesList} />*/}
