@@ -73,7 +73,7 @@ export default class PreviewBooking extends Component {
   }
 
   render() {
-    const { restoName, locate } = this.props.route.params;
+    const { restoName, locate, description, image } = this.props.route.params;
     const { navigate, goBack } = this.props.navigation;
     const { selected } = this.state;
 
@@ -100,6 +100,8 @@ export default class PreviewBooking extends Component {
                   navigate("ViewDetails", {
                     name: restoName,
                     location: locate,
+                    description: description,
+                    image: image,
                   });
                 } catch (error) {
                   errorMessage = error.message;

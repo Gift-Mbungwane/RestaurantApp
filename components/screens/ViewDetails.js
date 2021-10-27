@@ -31,7 +31,8 @@ export default class ViewDetails extends React.Component<Props> {
   }
 
   render() {
-    const { name, image, location, hours, menu } = this.props.route.params;
+    const { name, image, location, hours, description } =
+      this.props.route.params;
     const { navigate } = this.props.navigation;
 
     return (
@@ -114,17 +115,10 @@ export default class ViewDetails extends React.Component<Props> {
             showsHorizontalScrollIndicator={false}
             style={{ flexDirection: "row", marginVertical: 35 }}
           >
-            <FlatList
-              layout="default"
-              data={restImages}
-              renderItem={({ item, index }) => (
-                <Image
-                  key={index}
-                  source={item}
-                  style={globalStyles.imagesList}
-                />
-              )}
-            />
+            <View style={{ flexDirection: "column" }}>
+              <Text style={globalStyles.headerTextRview}>Description</Text>
+              <Text style={{ width: 300 }}>{description}</Text>
+            </View>
             {/* <Image source={{ uri: image }} style={globalStyles.imagesList} />
             <Image source={{ uri: image }} style={globalStyles.imagesList} />*/}
           </ScrollView>
@@ -134,6 +128,8 @@ export default class ViewDetails extends React.Component<Props> {
                 navigate("PreviewBooking", {
                   restoName: name,
                   locate: location,
+                  description: description,
+                  image: image,
                 })
               }
             >

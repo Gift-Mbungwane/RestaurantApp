@@ -10,7 +10,8 @@ const restaurants = [
       "Village View Shopping Centre Cnr Van Buuren Road and, Kloof Rd, Bedfordview, 2008",
     hours: " Open now:  9am–9pm  ",
     serviceOption: "No-contact delivery· Takeaway ·Dine-in ",
-    description: "",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   },
   {
     id: 2,
