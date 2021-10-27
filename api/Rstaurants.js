@@ -10,13 +10,7 @@ const restaurants = [
       "Village View Shopping Centre Cnr Van Buuren Road and, Kloof Rd, Bedfordview, 2008",
     hours: " Open now:  9am–9pm  ",
     serviceOption: "No-contact delivery· Takeaway ·Dine-in ",
-    menu: [
-      "https://www.google.com/maps/uv?pb=!1s0x1e950b8e4175ff0d:0x182c59b7ba52be67!3m1!7e115!4shttps://lh5.googleusercontent.com/p/AF1QipOGREGE4NFkX_yLKbEe0I9j0bqEgMBDYkJ9paHA%3Dw390-h262-n-k-no!5sjohannesburg+restaurants+-+Google+Search!15zQ2dJZ0FRPT0&imagekey=!1e10!2sAF1QipOGREGE4NFkX_yLKbEe0I9j0bqEgMBDYkJ9paHA&hl=en",
-
-      "https://www.google.com/maps/uv?pb=!1s0x1e950b8e4175ff0d%3A0x182c59b7ba52be67!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipOLvyAbAy4vIU3L_SUG-K8zw05Km4vSJVhKkwZ0%3Dw129-h130-n-k-no!5sjohannesburg%20restaurants%20-%20Google%20Search!15sCgIYIA&imagekey=!1e10!2sAF1QipPAsviuTQ_mIw31S8sNB2kF4Bupar-gHetzWUc8&hl=en#s",
-
-      "https://www.google.com/maps/uv?pb=!1s0x1e950b8e4175ff0d%3A0x182c59b7ba52be67!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipOLvyAbAy4vIU3L_SUG-K8zw05Km4vSJVhKkwZ0%3Dw129-h130-n-k-no!5sjohannesburg%20restaurants%20-%20Google%20Search!15sCgIYIQ&imagekey=!1e10!2sAF1QipNLTL5n9Ni4mDlV_H3WhtR0vNAGz6tJ5Qlq0Ilp&hl=en#",
-    ],
+    description: "",
   },
   {
     id: 2,

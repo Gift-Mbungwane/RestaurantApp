@@ -54,7 +54,6 @@ const DatePickers = () => {
               is24Hour={true}
               display="default"
               onChange={onChange}
-              on
             />
           )}
         </TouchableOpacity>

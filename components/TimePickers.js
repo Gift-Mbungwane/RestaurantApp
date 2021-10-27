@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import TimePicker from "react-native-24h-timepicker";
+import globalUserModel from "./Model";
 
-class TimeInPickers extends Component {
+class TimePickers extends Component {
   constructor() {
     super();
     this.state = {
-      time: "",
-      timeOut: "",
+      time: "19:20",
     };
   }
 
@@ -18,8 +18,8 @@ class TimeInPickers extends Component {
   onConfirm(hour, minute) {
     this.setState({
       time: `${hour}:${minute}`,
-      timeOut: `${hour}: ${minute}`,
     });
+    globalUserModel.setTimeIn(`${hour}:${minute}`);
     this.TimePicker.close();
   }
 
@@ -31,40 +31,19 @@ class TimeInPickers extends Component {
           style={{
             width: 100,
             height: 35,
-            backgroundColor: "blue",
+            backgroundColor: "#FFFFFF",
             borderRadius: 6,
           }}
         >
           <Text style={{ fontSize: 34 }}>{this.state.time}</Text>
-
-          {/*} <Text
-            style={{ fontSize: 18, color: "black", width: 100, height: 20 }}
-          >
-            {this.state.time}
-    </Text>*/}
         </TouchableOpacity>
-
         <TimePicker
-          placeholder={this.state.time}
           ref={(ref) => {
             this.TimePicker = ref;
           }}
           onCancel={() => this.onCancel()}
           onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
         />
-        {/*} <Text
-            style={{ fontSize: 18, color: "black", width: 100, height: 20 }}
-          >
-            {this.state.time}
-    </Text>*/}
-        {/*  <Text style={styles.text}>time ou:{this.state.time}</Text>
-        <TimePicker
-          ref={(ref) => {
-            this.TimePicker = ref;
-          }}
-          onCancel={() => this.onCancel()}
-          onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
-        />*/}
       </View>
     );
   }

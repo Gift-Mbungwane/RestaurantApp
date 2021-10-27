@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Button,
   TouchableOpacity,
+  DatePickerIOS,
 } from "react-native";
 import { Input } from "react-native-elements";
 import { globalStyles } from "../../styles/globalStyles";
@@ -27,14 +28,19 @@ import globalUserModel from "../Model";
 import DatePickers from "../DatePickers";
 //import DatePicker from "react-native-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import TimePickers from "../TimePickers";
+import TimePicker from "react-native-24h-timepicker";
 
-export default class PreviewBooking extends React.Component {
+export default class PreviewBooking extends Component {
   state = {
     isVisible: false,
     selected: new Date(),
+    time: "00:00",
+    timeOut: "12:00",
   };
   constructor(props) {
     super(props);
+
     //   { id, name, location, hours, description, serviceOption, image } = this.props.params;
   }
   displayModal(show) {
@@ -46,6 +52,26 @@ export default class PreviewBooking extends React.Component {
       selected: date,
     });
   };
+
+  onCancel() {
+    this.TimePicker.close();
+  }
+
+  onConfirm(hour, minute) {
+    this.setState({ time: `${hour}:${minute}` });
+    this.TimePicker.close();
+  }
+  onConfirmOut(hour, minute) {
+    this.setState({ timeOut: `${hour}: ${minute}` });
+    this.TimePicker.close();
+  }
+
+  onOpen() {
+    this.setState({
+      timeOut: `${hour}: ${minute}`,
+    });
+  }
+
   render() {
     const { restoName, locate } = this.props.route.params;
     const { navigate, goBack } = this.props.navigation;
@@ -203,7 +229,22 @@ export default class PreviewBooking extends React.Component {
                 }}
               >
                 <Ionicons name="ios-time" size={34} color="white" />
-                <TextInput
+                <TouchableOpacity
+                  onPress={() => this.TimePicker.open()}
+                  //onPress={() => this.TimePicker.open() }
+                  style={{
+                    borderRadius: 6,
+                    backgroundColor: "white",
+                    height: 40,
+                    color: "black",
+                    width: 120,
+                    marginHorizontal: 5,
+                    alignSelf: "center",
+                  }}
+                >
+                  <TimePickers />
+                </TouchableOpacity>
+                {/*} <TextInput
                   multiline
                   placeholder="Time-in"
                   //onChangeText={this.updateSearch}
@@ -218,25 +259,32 @@ export default class PreviewBooking extends React.Component {
                   }}
                   onChangeText={(timeIn) => globalUserModel.setTimeIn(timeIn)}
                   value={globalUserModel.timeIn}
-                />
-                <TextInput
-                  multiline
-                  placeholder="Time-out"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
+                />*/}
+                <TouchableOpacity
+                  onPress={() => this.TimePicker.open()}
+                  //onPress={() => this.TimePicker.open() }
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",
-                    height: 35,
+                    height: 40,
                     color: "black",
                     width: 120,
-                    marginHorizontal: 10,
+                    marginHorizontal: 5,
                   }}
-                  onChangeText={(timeOut) =>
-                    globalUserModel.setTimeOut(timeOut)
-                  }
-                  value={globalUserModel.timeOut}
-                />
+                >
+                  <Text style={{ fontSize: 40, alignSelf: "center" }}>
+                    {this.state.timeOut}
+                  </Text>
+                  <TimePicker
+                    ref={(ref) => {
+                      this.TimePicker = ref;
+                    }}
+                    onCancel={() => this.onCancel()}
+                    onConfirm={(hour, minute) =>
+                      this.onConfirmOut(hour, minute)
+                    }
+                  />
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -271,7 +319,7 @@ export default class PreviewBooking extends React.Component {
                       cellphone: globalUserModel.mobile,
                       guests: globalUserModel.numberOfGuest,
                       timeIn: globalUserModel.timeIn,
-                      timeOut: globalUserModel.timeOut,
+                      timeOut: this.state.timeOut,
                       date: selected,
                     });
                   }}
