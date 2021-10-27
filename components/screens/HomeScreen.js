@@ -164,7 +164,7 @@ export default class HomeScreen extends Component {
                         description: item.description,
                         serviceOption: item.serviceOption,
                         image: item.image,
-                        menu: item.menu,
+                        description: item.description,
                       })
                     }
                   >
