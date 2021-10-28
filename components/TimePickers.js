@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import TimePicker from "react-native-24h-timepicker";
 import globalUserModel from "./Model";
 
-class TimePickers extends Component {
+export default class TimePickers extends Component {
   constructor() {
     super();
     this.state = {
@@ -48,30 +48,3 @@ class TimePickers extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingTop: 100,
-  },
-  text: {
-    fontSize: 20,
-    marginTop: 10,
-  },
-  button: {
-    backgroundColor: "#4EB151",
-    paddingVertical: 11,
-    paddingHorizontal: 17,
-    borderRadius: 3,
-    marginVertical: 50,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});
-
-export default TimePickers;

@@ -142,4 +142,19 @@ export const globalStyles = StyleSheet.create({
     marginVertical: -70,
     position: "absolute",
   },
+  signInButton: {
+    backgroundColor: "#32AFB7",
+    height: 61,
+    width: 256,
+    marginVertical: 20,
+    alignSelf: "center",
+    borderRadius: 40,
+  },
+  loginIcon: {
+    borderRadius: 40,
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: "5%",
+    height: 50,
+    width: 50,
+  },
 });

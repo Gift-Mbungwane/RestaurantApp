@@ -25,8 +25,6 @@ import {
 } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import globalUserModel from "../Model";
-import DatePickers from "../DatePickers";
-//import DatePicker from "react-native-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TimePickers from "../TimePickers";
 import TimePicker from "react-native-24h-timepicker";
@@ -80,7 +78,6 @@ export default class PreviewBooking extends Component {
     const onChange = (event, selectedDate) => {
       const currentDate = selectedDate || selected;
       this.setState({ selected: currentDate });
-      // setDate(currentDate);
     };
 
     return (
@@ -96,7 +93,6 @@ export default class PreviewBooking extends Component {
             <TouchableOpacity
               onPress={() => {
                 try {
-                  goBack("ViewDetails");
                   navigate("ViewDetails", {
                     name: restoName,
                     location: locate,
@@ -131,8 +127,6 @@ export default class PreviewBooking extends Component {
                 <TextInput
                   multiline
                   placeholder="Name and Surname"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",
@@ -155,8 +149,6 @@ export default class PreviewBooking extends Component {
                 <TextInput
                   multiline
                   placeholder="address@address.com"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",
@@ -180,8 +172,6 @@ export default class PreviewBooking extends Component {
                 <TextInput
                   multiline
                   placeholder="Phone no.: (+27) 0"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",
@@ -206,8 +196,6 @@ export default class PreviewBooking extends Component {
                 <TextInput
                   multiline
                   placeholder="No. of Guests"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",
@@ -246,25 +234,9 @@ export default class PreviewBooking extends Component {
                 >
                   <TimePickers />
                 </TouchableOpacity>
-                {/*} <TextInput
-                  multiline
-                  placeholder="Time-in"
-                  //onChangeText={this.updateSearch}
-                  // value={search}
-                  style={{
-                    borderRadius: 6,
-                    backgroundColor: "white",
-                    height: 35,
-                    color: "black",
-                    width: 120,
-                    marginHorizontal: 5,
-                  }}
-                  onChangeText={(timeIn) => globalUserModel.setTimeIn(timeIn)}
-                  value={globalUserModel.timeIn}
-                />*/}
+
                 <TouchableOpacity
                   onPress={() => this.TimePicker.open()}
-                  //onPress={() => this.TimePicker.open() }
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",

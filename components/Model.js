@@ -23,6 +23,7 @@ class Model {
   setName(name) {
     this.userName = name;
   }
+
   setSurname(surname) {
     this.surName = surname;
   }

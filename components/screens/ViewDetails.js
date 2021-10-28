@@ -23,7 +23,6 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { restaurants, restImages } from "../../api/Rstaurants";
 import { ScrollView } from "react-native-gesture-handler";
-import DatePickers from "../DatePickers";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 export default class ViewDetails extends React.Component<Props> {
   constructor(props) {
