@@ -26,7 +26,6 @@ export default class RegisterScreen extends Component {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-
         // Add a new document in collection "users"
         return db.collection("users").doc(user.uid).set({
           uid: user.uid,
@@ -35,12 +34,12 @@ export default class RegisterScreen extends Component {
           password: globalUserModel.password,
         });
         // ...
-
         user.updateProfile({
           userName: globalUserModel.userName,
           email: globalUserModel.email,
           password: globalUserModel.password,
         });
+        //
       })
       .catch((error) => {
         const errorMessage = error.message;

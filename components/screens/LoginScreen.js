@@ -9,8 +9,9 @@ import {
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
 import globalUserModel from "../Model";
-import Login from "../../hooks/firebaseHook";
+import Login, { Google } from "../../hooks/firebaseHook";
 import { auth } from "../../database/firebase";
+import firebase from "firebase";
 
 const image = require("../../assets/Restaurant/loginscreen.jpg");
 export default class LoginScreen extends Component {
@@ -28,17 +29,121 @@ export default class LoginScreen extends Component {
         // Signed in
         const user = userCredential.user;
         // ...
+        const { navigate } = this.props.navigation;
+
         if (user) {
           navigate("HomeScreen");
         } else {
-          alert("please refresh your app");
+          alert("no acount has been found");
         }
       })
       .catch((error) => {
         const errorMessage = error.message;
-        alert("this account is not registered");
+        alert("Password and ");
+        //alert(errorMessage);
+        //  alert("this account is not registered");
         // alert(errorMessage);
         // ..
+      });
+  }
+
+  Google() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        const credential = result.credential;
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // ...
+        // ...
+        const { navigate } = this.props.navigation;
+
+        if (user) {
+          navigate("HomeScreen");
+        } else {
+          alert("no acount has been found");
+        }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+        // ...
+      });
+  }
+
+  Facebook() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    // provider.addScope("user_birthday");
+
+    // Assuming the current user is an Apple user linking a Facebook provider.
+    auth.currentUser
+      .linkWithPopup(provider)
+      .then((result) => {
+        // Facebook credential is linked to the current Apple user.
+        // Facebook additional data available in result.additionalUserInfo.profile,
+        // Additional Facebook OAuth access token can also be retrieved.
+        // result.credential.accessToken
+        // The user can now sign in to the same account
+        // with either Apple or Facebook.
+        const user = result.user;
+        const { navigate } = this.props.navigation;
+
+        if (user) {
+          navigate("HomeScreen");
+        } else {
+          alert("no acount has been found");
+        }
+      })
+      .catch((error) => {
+        // Handle error.
+        alert("failed to sign in with facebook");
+      });
+  }
+
+  Apple() {
+    const provider = new firebase.auth.OAuthProvider("apple.com");
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        const credential = result.credential;
+
+        // The signed-in user info.
+        const user = result.user;
+
+        // You can also get the Apple OAuth Access and ID Tokens.
+        const accessToken = credential.accessToken;
+        const idToken = credential.idToken;
+        // ...
+        // ...
+        const { navigate } = this.props.navigation;
+
+        if (user) {
+          navigate("HomeScreen");
+        } else {
+          alert("no acount has been found");
+        }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+
+        // ...
       });
   }
 
@@ -151,6 +256,14 @@ export default class LoginScreen extends Component {
             </View>
             <View style={{ flexDirection: "row", marginVertical: 55 }}>
               <TouchableOpacity
+                onPress={() => {
+                  try {
+                    this.Google();
+                  } catch (error) {
+                    const errorMess = error.message;
+                    alert("something went wrong while sigining in");
+                  }
+                }}
                 style={{
                   borderRadius: 40,
                   backgroundColor: "#FFFFFF",
@@ -167,6 +280,14 @@ export default class LoginScreen extends Component {
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => {
+                  try {
+                    this.Apple();
+                  } catch (error) {
+                    const errorMess = error.message;
+                    alert("something went wrong while sigining in");
+                  }
+                }}
                 style={{
                   borderRadius: 40,
                   backgroundColor: "#FFFFFF",
@@ -183,6 +304,16 @@ export default class LoginScreen extends Component {
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => {
+                  try {
+                    this.Facebook();
+                    console.log(this.Facebook());
+                  } catch (error) {
+                    const errorMess = error.message;
+                    console.log(errorMess);
+                    alert("something went wrong while sigining in");
+                  }
+                }}
                 style={{
                   borderRadius: 40,
                   backgroundColor: "#FFFFFF",

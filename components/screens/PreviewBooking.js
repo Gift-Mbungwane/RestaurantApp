@@ -44,12 +44,6 @@ export default class PreviewBooking extends Component {
   displayModal(show) {
     this.setState({ isVisible: show });
   }
-  handleChange = (date) => {
-    console.log("date: ", date);
-    this.setState({
-      selected: date,
-    });
-  };
 
   onCancel() {
     this.TimePicker.close();
