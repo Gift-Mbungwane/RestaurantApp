@@ -59,11 +59,11 @@ export const globalStyles = StyleSheet.create({
     alignItems: "flex-start",
   },
   flatlistContainer: {
-    width: 316,
+    width: "100%",
     height: 120,
     flexDirection: "row",
     //flex: 1,
-    backgroundColor: "rgba(245, 245, 245, 9)",
+    backgroundColor: "rgba(245, 245, 245, 1)",
     borderRadius: 20,
     elevation: 40,
     margin: 15,
@@ -92,7 +92,7 @@ export const globalStyles = StyleSheet.create({
   },
   Tab: {
     flexDirection: "row",
-    height: 70,
+    height: "10%",
     width: 380,
     backgroundColor: "#32AFB7",
     position: "absolute",
@@ -112,8 +112,7 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 40,
     alignSelf: "center",
     bottom: 0,
-    marginVertical: -50,
-    position: "absolute",
+    marginVertical: 10,
   },
   imagesList: {
     width: 150,

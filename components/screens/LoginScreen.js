@@ -237,7 +237,7 @@ export default class LoginScreen extends Component {
                 style={{
                   borderRadius: 40,
                   backgroundColor: "#32AFB7",
-                  marginHorizontal: "54%",
+                  marginHorizontal: "58%",
                   height: 50,
                   width: 50,
                 }}
@@ -349,7 +349,7 @@ export default class LoginScreen extends Component {
                   fontSize: 20,
                   color: "#FFFFFF",
                   textDecorationLine: "underline",
-                  marginHorizontal: "27%",
+                  marginHorizontal: "30%",
                 }}
               >
                 Forgot password

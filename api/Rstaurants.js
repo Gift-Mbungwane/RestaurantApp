@@ -92,6 +92,16 @@ const restaurants = [
   },
   {
     id: 9,
+    name: "Hell's Kitchen",
+    image:
+      "https://www.google.com/maps/uv?pb=!1s0x1e950b8e4175ff0d:0x182c59b7ba52be67!3m1!7e115!4shttps://lh5.googleusercontent.com/p/AF1QipPDtiZkYhV3YAkYTGfAOyTPUAsNXPG8qozONfSL%3Dw129-h130-n-k-no!5sjohannesburg+restaurants+-+Google+Search!15zQ2dJZ0FRPT0&imagekey=!1e10!2sAF1QipPDtiZkYhV3YAkYTGfAOyTPUAsNXPG8qozONfSL&hl=en",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+    location: "4 7th St, Melville, Johannesburg, 2109 ",
+    serviceOption: " Dine-in · Takeaway · Delivery ",
+  },
+  {
+    id: 10,
     name: "Doppio Zero",
     image:
       "https://www.google.com/maps/uv?pb=!1s0x1e9573de39650771:0xc4a4448988ea8f41!3m1!7e115!4shttps://lh5.googleusercontent.com/p/AF1QipN0wQskFghvBrb-ARtB-VMAOguOE06NM5IDkufI%3Dw195-h130-n-k-no!5sbrynston+restaurants+-+Google+Search!15zQ2dJZ0FRPT0&imagekey=!1e10!2sAF1QipN0wQskFghvBrb-ARtB-VMAOguOE06NM5IDkufI&hl=en",
@@ -100,16 +110,6 @@ const restaurants = [
     location: "Hobart Grove Centre, 52 Hobart Rd, Bryanston, Sandton, 2191",
     hours: "Hours or services may differ ",
     serviceOption: "Dine-in · Takeaway · No-contact delivery ",
-  },
-  {
-    id: 10,
-    name: "Hell's Kitchen",
-    image:
-      "https://www.google.com/maps/uv?pb=!1s0x1e950b8e4175ff0d:0x182c59b7ba52be67!3m1!7e115!4shttps://lh5.googleusercontent.com/p/AF1QipPDtiZkYhV3YAkYTGfAOyTPUAsNXPG8qozONfSL%3Dw129-h130-n-k-no!5sjohannesburg+restaurants+-+Google+Search!15zQ2dJZ0FRPT0&imagekey=!1e10!2sAF1QipPDtiZkYhV3YAkYTGfAOyTPUAsNXPG8qozONfSL&hl=en",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-    location: "4 7th St, Melville, Johannesburg, 2109 ",
-    serviceOption: " Dine-in · Takeaway · Delivery ",
   },
 ];
 /*
