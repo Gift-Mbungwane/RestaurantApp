@@ -47,7 +47,7 @@ export default class ConfirmBooking extends Component {
     return db
       .collection("bookings")
       .doc()
-      .add({
+      .set({
         uuid: auth?.currentUser?.uid,
         name: globalUserModel.userName,
         location: location,
