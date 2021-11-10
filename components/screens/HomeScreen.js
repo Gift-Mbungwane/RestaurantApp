@@ -22,6 +22,7 @@ import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import { restaurants } from "../../api/Rstaurants";
 import { NavigationContainer } from "@react-navigation/native";
+import { auth, db } from "../../database/firebase";
 
 const image = require("../../assets/burger.jpg");
 
@@ -31,7 +32,7 @@ export default class HomeScreen extends Component {
     hasLocationPermission: false,
     latitude: 0,
     longitude: 0,
-    restaurantList: [],
+    restaurantList: null,
   };
 
   /* constructor(props) {
@@ -39,6 +40,7 @@ export default class HomeScreen extends Component {
   }*/
   componentDidMount() {
     this.getLocationAsync();
+    this.getRestos();
   }
 
   async getLocationAsync() {
@@ -57,6 +59,19 @@ export default class HomeScreen extends Component {
     } else {
       alert("Location permission not granted");
     }
+  }
+
+  getRestos() {
+    const uid = auth?.currentUser?.uid;
+    return db
+      .collection("admin")
+      .where("uid", "!=", uid)
+      .get()
+      .then((snapshot) => {
+        const resto = snapshot.docs.map((documentSnap) => documentSnap.data());
+        //console.log(resto);
+        this.setState({ restaurantList: resto });
+      });
   }
 
   handleRestaurantSearch = () => {
@@ -98,13 +113,13 @@ export default class HomeScreen extends Component {
         <Text style={globalStyles.headerText}>Explore Restaurants</Text>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={restaurants}
+          data={this.state.restaurantList}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
               <View style={globalStyles.flatlistContainer}>
                 <Image
-                  source={{ uri: item.image }}
+                  source={{ uri: item.photoURL }}
                   style={globalStyles.image}
                 />
                 <View style={{ padding: 18 }}>
@@ -118,7 +133,7 @@ export default class HomeScreen extends Component {
                       color: "rgba(89, 89, 89, 1)",
                     }}
                   >
-                    {item.name}
+                    {item.displayName}
                   </Text>
                   <View
                     style={{
@@ -157,13 +172,13 @@ export default class HomeScreen extends Component {
                     }}
                     onPress={() =>
                       navigate("ViewDetails", {
-                        id: item.id,
-                        name: item.name,
+                        uid: item.uid,
+                        name: item.displayName,
                         location: item.location,
                         hours: item.hours,
                         description: item.description,
                         serviceOption: item.serviceOption,
-                        image: item.image,
+                        image: item.photoURL,
                         description: item.description,
                       })
                     }

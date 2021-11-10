@@ -23,7 +23,16 @@ const app = firebase.initializeApp(firebaseApp);
 const db = app.firestore();
 const auth = app.auth();
 const userCollection = db.collection("users");
+const bookingCollection = db.collection("booking");
 const realtimedb = app.database();
 const storage = app.storage();
 
-export { db, auth, userCollection, firebaseApp, realtimedb, storage };
+export {
+  db,
+  auth,
+  userCollection,
+  firebaseApp,
+  realtimedb,
+  storage,
+  bookingCollection,
+};

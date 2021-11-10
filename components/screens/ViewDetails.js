@@ -24,13 +24,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { restaurants, restImages } from "../../api/Rstaurants";
 import { ScrollView } from "react-native-gesture-handler";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import globalUserModel from "../Model";
 export default class ViewDetails extends React.Component<Props> {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { name, image, location, hours, description } =
+    const { name, image, location, hours, description, uid } =
       this.props.route.params;
     const { navigate } = this.props.navigation;
 
@@ -125,10 +126,12 @@ export default class ViewDetails extends React.Component<Props> {
             <TouchableOpacity
               onPress={() =>
                 navigate("PreviewBooking", {
+                  userName: globalUserModel.userName,
                   restoName: name,
                   locate: location,
                   description: description,
                   image: image,
+                  uid: uid,
                 })
               }
             >

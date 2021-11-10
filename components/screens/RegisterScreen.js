@@ -9,7 +9,6 @@ import {
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
 import globalUserModel from "../Model";
-import { Register } from "../../hooks/firebaseHook";
 import { auth, db, realtimedb } from "../../database/firebase";
 
 const image = require("../../assets/Restaurant/register.jpg");
@@ -117,6 +116,7 @@ export default class RegisterScreen extends Component {
                     globalUserModel.setPassword(password)
                   }
                   style={{ color: "#FFFFFF" }}
+                  secureTextEntry={true}
                 />
               </View>
             </KeyboardAvoidingView>

@@ -28,6 +28,7 @@ import globalUserModel from "../Model";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TimePickers from "../TimePickers";
 import TimePicker from "react-native-24h-timepicker";
+import { auth } from "../../database/firebase";
 
 export default class PreviewBooking extends Component {
   state = {
@@ -54,18 +55,19 @@ export default class PreviewBooking extends Component {
     this.TimePicker.close();
   }
   onConfirmOut(hour, minute) {
-    this.setState({ timeOut: `${hour}: ${minute}` });
+    this.setState({ timeOut: `${hour}:${minute}` });
     this.TimePicker.close();
   }
 
   onOpen() {
     this.setState({
-      timeOut: `${hour}: ${minute}`,
+      timeOut: `${hour}:${minute}`,
     });
   }
 
   render() {
-    const { restoName, locate, description, image } = this.props.route.params;
+    const { restoName, locate, description, image, userName, uid } =
+      this.props.route.params;
     const { navigate, goBack } = this.props.navigation;
     const { selected } = this.state;
 
@@ -76,40 +78,41 @@ export default class PreviewBooking extends Component {
 
     return (
       <View style={globalStyles.centeredView}>
-        <ScrollView>
-          <View
-            style={{
-              backgroundColor: "#32AFB7",
-              height: 630,
-              borderRadius: 20,
+        <View
+          style={{
+            backgroundColor: "#32AFB7",
+            height: 630,
+            borderRadius: 20,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                navigate("ViewDetails", {
+                  name: restoName,
+                  location: locate,
+                  description: description,
+                  image: image,
+                  uid: uid,
+                });
+              } catch (error) {
+                errorMessage = error.message;
+                alert(errorMessage);
+              }
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                try {
-                  navigate("ViewDetails", {
-                    name: restoName,
-                    location: locate,
-                    description: description,
-                    image: image,
-                  });
-                } catch (error) {
-                  errorMessage = error.message;
-                  alert(errorMessage);
-                }
-              }}
-            >
-              <AntDesign
-                name="closecircle"
-                size={24}
-                color="white"
-                style={{ padding: 24 }}
-              />
-            </TouchableOpacity>
-            <Text style={globalStyles.headTextModal}>Reservation</Text>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
+            <AntDesign
+              name="closecircle"
+              size={24}
+              color="white"
+              style={{ padding: 24 }}
+            />
+          </TouchableOpacity>
+          <Text style={globalStyles.headTextModal}>Reservation</Text>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <ScrollView>
               <View
                 style={{
                   flexDirection: "row",
@@ -129,7 +132,7 @@ export default class PreviewBooking extends Component {
                     width: 200,
                   }}
                   onChangeText={(userName) => globalUserModel.setName(userName)}
-                  value={globalUserModel.userName}
+                  value={auth?.currentUser?.displayName}
                 />
               </View>
               <View
@@ -276,38 +279,40 @@ export default class PreviewBooking extends Component {
                   }}
                 />
               </View>
-              <View style={globalStyles.confirmBook}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigate("ConfirmBooking", {
-                      name: restoName,
-                      location: locate,
-                      userName: globalUserModel.userName,
-                      email: globalUserModel.email,
-                      cellphone: globalUserModel.mobile,
-                      guests: globalUserModel.numberOfGuest,
-                      timeIn: globalUserModel.timeIn,
-                      timeOut: this.state.timeOut,
-                      date: selected,
-                    });
+            </ScrollView>
+            <View style={globalStyles.confirmBook}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigate("ConfirmBooking", {
+                    usereName: userName,
+                    name: restoName,
+                    location: locate,
+                    userName: globalUserModel.userName,
+                    email: globalUserModel.email,
+                    cellphone: globalUserModel.mobile,
+                    guests: globalUserModel.numberOfGuest,
+                    timeIn: globalUserModel.timeIn,
+                    timeOut: this.state.timeOut,
+                    date: selected,
+                    uid: uid,
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontWeight: "400",
+                    marginVertical: 15,
+                    fontSize: 24,
+                    color: "black",
                   }}
                 >
-                  <Text
-                    style={{
-                      alignSelf: "center",
-                      fontWeight: "400",
-                      marginVertical: 15,
-                      fontSize: 24,
-                      color: "black",
-                    }}
-                  >
-                    Book now
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </KeyboardAvoidingView>
-          </View>
-        </ScrollView>
+                  Book now
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
       </View>
     );
   }

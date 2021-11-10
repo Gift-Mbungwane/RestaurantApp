@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   container: {
@@ -85,7 +85,7 @@ export const globalStyles = StyleSheet.create({
     width: 316,
     height: 200,
     borderRadius: 20,
-    elevation: 40,
+    elevation: 5,
   },
   flatInside: {
     flexDirection: "row",
@@ -126,7 +126,7 @@ export const globalStyles = StyleSheet.create({
     width: 150,
     borderRadius: 40,
     alignSelf: "center",
-    elevation: 20,
+    elevation: 5,
     marginVertical: 480,
     position: "absolute",
   },
@@ -138,7 +138,7 @@ export const globalStyles = StyleSheet.create({
     alignSelf: "center",
     bottom: 0,
     elevation: 20,
-    marginVertical: -70,
+    marginVertical: -60,
     position: "absolute",
   },
   signInButton: {
@@ -155,5 +155,10 @@ export const globalStyles = StyleSheet.create({
     marginHorizontal: "5%",
     height: 50,
     width: 50,
+  },
+  pdf: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });

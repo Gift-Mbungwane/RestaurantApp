@@ -9,7 +9,6 @@ import {
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
 import globalUserModel from "../Model";
-import Login, { Google } from "../../hooks/firebaseHook";
 import { auth } from "../../database/firebase";
 import firebase from "firebase";
 
@@ -210,7 +209,7 @@ export default class LoginScreen extends Component {
                   onChangeText={(password) =>
                     globalUserModel.setPassword(password)
                   }
-                  secureTextEntry
+                  secureTextEntry={true}
                   style={{ color: "#FFFFFF" }}
                 />
               </View>
@@ -228,6 +227,7 @@ export default class LoginScreen extends Component {
               <TouchableOpacity
                 onPress={() => {
                   try {
+                    //navigate("HomeScreen");
                     this.Login();
                   } catch (error) {
                     const erro = error.message;
@@ -237,7 +237,7 @@ export default class LoginScreen extends Component {
                 style={{
                   borderRadius: 40,
                   backgroundColor: "#32AFB7",
-                  marginHorizontal: "58%",
+                  marginHorizontal: "53.5%",
                   height: 50,
                   width: 50,
                 }}
@@ -349,7 +349,7 @@ export default class LoginScreen extends Component {
                   fontSize: 20,
                   color: "#FFFFFF",
                   textDecorationLine: "underline",
-                  marginHorizontal: "30%",
+                  marginHorizontal: "26%",
                 }}
               >
                 Forgot password

@@ -13,10 +13,120 @@ import { globalStyles } from "../../styles/globalStyles";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
+import {
+  auth,
+  bookingCollection,
+  db,
+  realtimedb,
+} from "../../database/firebase";
+import globalUserModel from "../Model";
 
 export default class ConfirmBooking extends Component {
+  state = {
+    admin: [],
+  };
+
   constructor(props) {
     super(props);
+  }
+
+  upload() {
+    const {
+      name,
+      location,
+      userName,
+      email,
+      cellphone,
+      guests,
+      timeIn,
+      timeOut,
+      date,
+      uid,
+    } = this.props.route.params;
+
+    return db
+      .collection("bookings")
+      .doc()
+      .add({
+        uuid: auth?.currentUser?.uid,
+        name: globalUserModel.userName,
+        location: location,
+        address: globalUserModel.email,
+        phone: globalUserModel.mobile,
+        guest: guests,
+        timein: timeIn,
+        timeOut: timeOut,
+        date: date,
+        uid: uid,
+        createdAt: new Date(),
+      })
+      .then(() => alert("booking has been added"))
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert("we could not add the booking, try chacking your network");
+      });
+    //
+    /*  db.collection(name)
+        .add({
+          uid: auth?.currentUser?.uid,
+          name: globalUserModel.userName,
+          location: location,
+          address: globalUserModel.email,
+          phone: globalUserModel.mobile,
+          guest: guests,
+          timein: timeIn,
+          timeOut: timeOut,
+          date: date,
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+      */
+    //for users booking
+    /*  return db
+        .collection(name)
+        .doc()
+        .set({
+          uid: auth?.currentUser?.uid,
+          name: globalUserModel.userName,
+          location: location,
+          address: globalUserModel.email,
+          phone: globalUserModel.mobile,
+          guest: guests,
+          timein: timeIn,
+          timeOut: timeOut,
+          date: date,
+        })
+        .then(() => alert("youve succefully bookd a table"))
+        .catch((error) => {
+          alert("ubable to upload this booking");
+        });
+        */
+    /*
+      return db
+        .collection("fireroom")
+        .doc(" bookings")
+        .collection("user2")
+        .doc("DetailsOfBooking")
+        .set({
+          address: "gizo@gizo.com",
+          phone: "074503333",
+          location: "location",
+          name: "restaurant name",
+          guest: "5",
+          timein: "00:00",
+          timeOut: "09:00",
+          date: "22/22/2021",
+        })
+        .then(() => alert("youve succefully bookd a table"))
+        .catch((error) => {
+          alert("ubable to upload this booking");
+        });
+      // return  realtimedb.ref(name).ref("Bookings").;
+        */
   }
 
   render() {
@@ -30,7 +140,9 @@ export default class ConfirmBooking extends Component {
       timeIn,
       timeOut,
       date,
+      uid,
     } = this.props.route.params;
+
     const { navigate, goBack } = this.props.navigation;
     return (
       <ScrollView>
@@ -66,6 +178,7 @@ export default class ConfirmBooking extends Component {
                   timeIn: timeIn,
                   timeOut: timeOut,
                   date: date,
+                  uid: uid,
                 });
               } catch (error) {
                 errorMessage = error.message;
@@ -171,9 +284,16 @@ export default class ConfirmBooking extends Component {
           <TouchableOpacity
             style={globalStyles.reviewBooked}
             onPress={() => {
-              alert("you have successfully booked a take");
-              // this.displayModal(false);
-              navigate("HomeScreen");
+              try {
+                this.upload();
+                //alert("you have successfully reserved a table");
+                // this.displayModal(false);
+                //navigate("HomeScreen");
+              } catch (error) {
+                const errMess = error.message;
+                console.log(errMess);
+                alert("failed to upload booking information");
+              }
             }}
           >
             <Text
