@@ -41,8 +41,7 @@ export default class ViewDetails extends React.Component<Props> {
     return db
       .collection("menu")
       .where("uid", "==", uid)
-      .get()
-      .then((dataSnapshot) => {
+      .onSnapshot((dataSnapshot) => {
         const data = dataSnapshot.docs.map((dataDoc) => dataDoc.data());
         //console.log(data);
         this.setState({ menu: data });

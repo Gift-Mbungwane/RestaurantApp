@@ -67,8 +67,7 @@ export default class HomeScreen extends Component {
     const user = db
       .collection("users")
       .where("uid", "==", auth?.currentUser?.uid)
-      .get()
-      .then((snapShot) => {
+      .onSnapshot((snapShot) => {
         const data = snapShot.docs.map((document) => document.data());
         this.setState({ user: data });
       });
@@ -79,8 +78,7 @@ export default class HomeScreen extends Component {
     return db
       .collection("admin")
       .where("uid", "!=", uid)
-      .get()
-      .then((snapshot) => {
+      .onSnapshot((snapshot) => {
         const resto = snapshot.docs.map((documentSnap) => documentSnap.data());
         //console.log(resto);
 

@@ -83,8 +83,7 @@ export default function UserScreen({ route, navigation }) {
     return db
       .collection("users")
       .where("uid", "==", uid)
-      .get()
-      .then((snapShot) => {
+      .onSnapshot((snapShot) => {
         const query = snapShot.docs.map((documentSnap) => documentSnap.data());
         //console.log(resto);
         setUser(query);
