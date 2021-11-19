@@ -4,7 +4,6 @@ export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    height: 200,
   },
   centeredView: {
     flex: 1,
@@ -138,7 +137,7 @@ export const globalStyles = StyleSheet.create({
     alignSelf: "center",
     bottom: 0,
     elevation: 20,
-    marginVertical: -60,
+    marginVertical: 40,
     position: "absolute",
   },
   signInButton: {
@@ -160,5 +159,15 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  changeStatusText: {
+    backgroundColor: "white",
+    marginVertical: 15,
+    position: "relative",
+    marginVertical: 10,
+    height: 40,
+    width: 100,
+    alignSelf: "center",
+    borderRadius: 20,
   },
 });

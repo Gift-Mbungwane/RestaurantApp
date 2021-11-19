@@ -23,6 +23,7 @@ import * as Location from "expo-location";
 import { restaurants } from "../../api/Rstaurants";
 import { NavigationContainer } from "@react-navigation/native";
 import { auth, db } from "../../database/firebase";
+import globalUserModel from "../Model";
 
 const image = require("../../assets/burger.jpg");
 
@@ -33,6 +34,7 @@ export default class HomeScreen extends Component {
     latitude: 0,
     longitude: 0,
     restaurantList: null,
+    user: null,
   };
 
   /* constructor(props) {
@@ -41,6 +43,7 @@ export default class HomeScreen extends Component {
   componentDidMount() {
     this.getLocationAsync();
     this.getRestos();
+    this.getUser();
   }
 
   async getLocationAsync() {
@@ -60,6 +63,16 @@ export default class HomeScreen extends Component {
       alert("Location permission not granted");
     }
   }
+  getUser() {
+    const user = db
+      .collection("users")
+      .where("uid", "==", auth?.currentUser?.uid)
+      .get()
+      .then((snapShot) => {
+        const data = snapShot.docs.map((document) => document.data());
+        this.setState({ user: data });
+      });
+  }
 
   getRestos() {
     const uid = auth?.currentUser?.uid;
@@ -70,6 +83,7 @@ export default class HomeScreen extends Component {
       .then((snapshot) => {
         const resto = snapshot.docs.map((documentSnap) => documentSnap.data());
         //console.log(resto);
+
         this.setState({ restaurantList: resto });
       });
   }
@@ -112,9 +126,17 @@ export default class HomeScreen extends Component {
         </View>
         <Text style={globalStyles.headerText}>Explore Restaurants</Text>
         <FlatList
+          data={this.state.user}
+          renderItem={({ item }) => {
+            globalUserModel.setPhoto(item.photoURL);
+            globalUserModel.setUser(item.userName);
+            globalUserModel.setEmail(item.email);
+          }}
+        />
+        <FlatList
           showsVerticalScrollIndicator={false}
           data={this.state.restaurantList}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => item.uid}
           renderItem={({ item }) => {
             return (
               <View style={globalStyles.flatlistContainer}>
@@ -180,6 +202,8 @@ export default class HomeScreen extends Component {
                         serviceOption: item.serviceOption,
                         image: item.photoURL,
                         description: item.description,
+                        photo: globalUserModel.photo,
+                        uName: globalUserModel.user,
                       })
                     }
                   >

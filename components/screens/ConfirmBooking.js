@@ -42,14 +42,18 @@ export default class ConfirmBooking extends Component {
       timeOut,
       date,
       uid,
+      photo,
+      uName,
+      image,
     } = this.props.route.params;
+
+    const { navigate } = this.props.navigation;
 
     return db
       .collection("bookings")
-      .doc()
-      .set({
+      .add({
         uuid: auth?.currentUser?.uid,
-        name: globalUserModel.userName,
+        name: name,
         location: location,
         address: globalUserModel.email,
         phone: globalUserModel.mobile,
@@ -59,74 +63,24 @@ export default class ConfirmBooking extends Component {
         date: date,
         uid: uid,
         createdAt: new Date(),
+        photoURL: photo,
+        uName: uName,
+        imageURL: image,
+        status: "pending",
       })
-      .then(() => alert("booking has been added"))
+      .then((docRef) => {
+        alert("booking has been added");
+        docRef.update({
+          key: docRef.id,
+        });
+        // docRef.id;
+        // console.log(docRef.id);
+        navigate("HomeScreen");
+      })
       .catch((error) => {
         const errorMessage = error.message;
         alert("we could not add the booking, try chacking your network");
       });
-    //
-    /*  db.collection(name)
-        .add({
-          uid: auth?.currentUser?.uid,
-          name: globalUserModel.userName,
-          location: location,
-          address: globalUserModel.email,
-          phone: globalUserModel.mobile,
-          guest: guests,
-          timein: timeIn,
-          timeOut: timeOut,
-          date: date,
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      */
-    //for users booking
-    /*  return db
-        .collection(name)
-        .doc()
-        .set({
-          uid: auth?.currentUser?.uid,
-          name: globalUserModel.userName,
-          location: location,
-          address: globalUserModel.email,
-          phone: globalUserModel.mobile,
-          guest: guests,
-          timein: timeIn,
-          timeOut: timeOut,
-          date: date,
-        })
-        .then(() => alert("youve succefully bookd a table"))
-        .catch((error) => {
-          alert("ubable to upload this booking");
-        });
-        */
-    /*
-      return db
-        .collection("fireroom")
-        .doc(" bookings")
-        .collection("user2")
-        .doc("DetailsOfBooking")
-        .set({
-          address: "gizo@gizo.com",
-          phone: "074503333",
-          location: "location",
-          name: "restaurant name",
-          guest: "5",
-          timein: "00:00",
-          timeOut: "09:00",
-          date: "22/22/2021",
-        })
-        .then(() => alert("youve succefully bookd a table"))
-        .catch((error) => {
-          alert("ubable to upload this booking");
-        });
-      // return  realtimedb.ref(name).ref("Bookings").;
-        */
   }
 
   render() {
@@ -141,20 +95,14 @@ export default class ConfirmBooking extends Component {
       timeOut,
       date,
       uid,
+      photo,
+      uName,
+      image,
     } = this.props.route.params;
 
     const { navigate, goBack } = this.props.navigation;
     return (
       <ScrollView>
-        {/*   <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.state.isVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            // this.setState(!this.state.modalVisible);
-          }}
-        >*/}
         <View
           style={{
             borderRadius: 20,
@@ -179,6 +127,9 @@ export default class ConfirmBooking extends Component {
                   timeOut: timeOut,
                   date: date,
                   uid: uid,
+                  photo: photo,
+                  uName: uName,
+                  image: image,
                 });
               } catch (error) {
                 errorMessage = error.message;
@@ -228,9 +179,7 @@ export default class ConfirmBooking extends Component {
             </View>
             <View style={{ flexDirection: "row", marginHorizontal: 15 }}>
               <AntDesign name="user" size={24} color="#32AFB7" />
-              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>
-                {userName}
-              </Text>
+              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>{uName}</Text>
             </View>
             <View
               style={{

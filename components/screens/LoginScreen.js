@@ -38,7 +38,7 @@ export default class LoginScreen extends Component {
       })
       .catch((error) => {
         const errorMessage = error.message;
-        alert("Password and ");
+        alert("Please check your network bandwith");
         //alert(errorMessage);
         //  alert("this account is not registered");
         // alert(errorMessage);

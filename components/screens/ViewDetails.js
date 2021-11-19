@@ -25,13 +25,36 @@ import { restaurants, restImages } from "../../api/Rstaurants";
 import { ScrollView } from "react-native-gesture-handler";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import globalUserModel from "../Model";
+import { db } from "../../database/firebase";
+
 export default class ViewDetails extends React.Component<Props> {
+  state = {
+    menu: null,
+  };
+
   constructor(props) {
     super(props);
   }
 
+  getData() {
+    const { uid } = this.props.route.params;
+    return db
+      .collection("menu")
+      .where("uid", "==", uid)
+      .get()
+      .then((dataSnapshot) => {
+        const data = dataSnapshot.docs.map((dataDoc) => dataDoc.data());
+        //console.log(data);
+        this.setState({ menu: data });
+      });
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
   render() {
-    const { name, image, location, hours, description, uid } =
+    const { name, image, location, hours, description, uid, photo, uName } =
       this.props.route.params;
     const { navigate } = this.props.navigation;
 
@@ -100,16 +123,6 @@ export default class ViewDetails extends React.Component<Props> {
             </View>
           </View>
           <Text style={globalStyles.headerTextRview}>What we offer</Text>
-          <Text
-            style={{
-              color: "red",
-              alignSelf: "flex-end",
-              marginVertical: -23,
-              right: 15,
-            }}
-          >
-            menu.pdf
-          </Text>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -119,19 +132,39 @@ export default class ViewDetails extends React.Component<Props> {
               <Text style={globalStyles.headerTextRview}>Description</Text>
               <Text style={{ width: 300 }}>{description}</Text>
             </View>
-            {/* <Image source={{ uri: image }} style={globalStyles.imagesList} />
-            <Image source={{ uri: image }} style={globalStyles.imagesList} />*/}
           </ScrollView>
+          <View>
+            <FlatList
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={this.state.menu}
+              keyExtractor={(item) => item.key}
+              renderItem={({ item }) => {
+                return (
+                  <View style={{ margin: 10 }}>
+                    <Image
+                      style={globalStyles.image}
+                      source={{ uri: item.photoURL }}
+                    />
+                    <Text style={{ fontSize: 16, fontWeight: "bold", left: 5 }}>
+                      {item.menu}
+                    </Text>
+                  </View>
+                );
+              }}
+            />
+          </View>
           <View style={globalStyles.confirmButton}>
             <TouchableOpacity
               onPress={() =>
                 navigate("PreviewBooking", {
-                  userName: globalUserModel.userName,
                   restoName: name,
                   locate: location,
                   description: description,
                   image: image,
                   uid: uid,
+                  photo: photo,
+                  uName: uName,
                 })
               }
             >

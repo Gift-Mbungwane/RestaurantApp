@@ -20,6 +20,7 @@ export default class BookingHistory extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={globalStyles.container}>
+        <View></View>
         <View style={globalStyles.Tab}>
           <View style={globalStyles.iconTab}>
             <TouchableOpacity onPress={() => navigate("HomeScreen")}>

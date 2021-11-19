@@ -8,7 +8,7 @@ class Model {
   password;
   users;
   messages = [];
-  allUsers = null;
+  user;
   numberOfGuest;
   timeIn;
   timeOut;
@@ -55,8 +55,8 @@ class Model {
   setPassword(password) {
     this.password = password;
   }
-  setUsers(users) {
-    this.users = users;
+  setUser(user) {
+    this.user = user;
   }
 }
 
