@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   Image,
+  ScrollView,
   Modal,
   Pressable,
   StyleSheet,
@@ -22,8 +23,6 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import ImageZoom from "react-native-image-pan-zoom";
-import { ScrollView } from "react-native-gesture-handler";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import globalUserModel from "../Model";
 import { db } from "../../database/firebase";
@@ -132,7 +131,7 @@ export default class ViewDetails extends React.Component<Props> {
               return (
                 <View style={{ margin: 10 }}>
                   <Image
-                    style={globalStyles.image}
+                    style={globalStyles.menuImage}
                     source={{ uri: item.photoURL }}
                   />
                   <Text

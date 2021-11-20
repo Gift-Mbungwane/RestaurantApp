@@ -49,38 +49,36 @@ export default class ConfirmBooking extends Component {
 
     const { navigate } = this.props.navigation;
 
-    return db
-      .collection("bookings")
-      .add({
-        uuid: auth?.currentUser?.uid,
-        name: name,
-        location: location,
-        address: globalUserModel.email,
-        phone: globalUserModel.mobile,
-        guest: guests,
-        timein: timeIn,
-        timeOut: timeOut,
-        date: date,
-        uid: uid,
-        createdAt: new Date(),
-        photoURL: photo,
-        uName: uName,
-        imageURL: image,
-        status: "pending",
-      })
-      .then((docRef) => {
-        alert("booking has been added");
-        docRef.update({
-          key: docRef.id,
-        });
+    return (
+      db
+        .collection("bookings")
+        .add({
+          uuid: auth?.currentUser?.uid,
+          name: name,
+          location: location,
+          address: globalUserModel.email,
+          phone: globalUserModel.mobile,
+          guest: guests,
+          timein: timeIn,
+          timeOut: timeOut,
+          date: date,
+          uid: uid,
+          createdAt: new Date(),
+          photoURL: photo,
+          uName: uName,
+          imageURL: image,
+          status: "pending",
+        })
+        .then(() => navigate("HomeScreen"))
+
         // docRef.id;
         // console.log(docRef.id);
-        navigate("HomeScreen");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        alert("we could not add the booking, try chacking your network");
-      });
+
+        .catch((error) => {
+          const errorMessage = error.message;
+          alert("we could not add the booking, try chacking your network");
+        })
+    );
   }
 
   render() {

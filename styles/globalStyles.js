@@ -57,6 +57,11 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "flex-start",
   },
+  menuImage: {
+    width: 160,
+    height: 180,
+    borderRadius: 20,
+  },
   flatlistContainer: {
     width: "100%",
     height: 120,
