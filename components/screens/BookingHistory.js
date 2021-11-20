@@ -79,7 +79,28 @@ export default class BookingHistory extends Component {
                     </Text>
                     <Text> {new Date(item.date.toDate()).toDateString()}</Text>
                   </View>
-                  <TouchableOpacity style={{ top: "15%" }}>
+                  <TouchableOpacity
+                    style={{ top: "15%" }}
+                    onPress={() =>
+                      navigate("BookingDetails", {
+                        email: item.address,
+                        name: item.uName,
+                        phone: item.phone,
+                        guest: item.guest,
+                        timein: item.timein,
+                        timeOut: item.timeOut,
+                        photo: item.imageURL,
+                        message: item.message,
+                        location: item.location,
+                        status: item.status,
+                        createdAt: new Date(
+                          item.createdAt.toDate()
+                        ).toDateString(),
+                        date: new Date(item.date.toDate()).toDateString(),
+                        resto: item.name,
+                      })
+                    }
+                  >
                     <Ionicons name="ios-eye-outline" size={24} color="black" />
                   </TouchableOpacity>
                 </View>

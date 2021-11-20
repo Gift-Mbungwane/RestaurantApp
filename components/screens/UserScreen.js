@@ -22,7 +22,7 @@ import { globalStyles } from "../../styles/globalStyles";
 import HomeScreen from "../screens/HomeScreen";
 import globalUserModel from "../Model";
 import * as ImagePicker from "expo-image-picker";
-import { auth, db } from "../../database/firebase";
+import { auth, db, storage } from "../../database/firebase";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -67,12 +67,13 @@ export default function UserScreen({ route, navigation }) {
       .collection("users")
       .doc(uid)
       .update({
-        email: globalUserModel.email,
-        password: globalUserModel.password,
         photoURL: image,
         userName: globalUserModel.userName,
       })
-      .then(() => setVisible(false))
+      .then(() => {
+        setVisible(false);
+        const reference = storage.ref(image).put(`users/${uid}/${image}`);
+      })
       .catch((error) => {
         alert("could not update this information");
       });
@@ -90,6 +91,36 @@ export default function UserScreen({ route, navigation }) {
       });
   };
 
+  const Signout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/firebase.User
+            const uid = user.uid;
+            navigation.navigate("LoginScreen");
+            // alert("account is still signed in");
+
+            // ...
+          } else {
+            alert("you're now logged out");
+            navigation.navigate("LoginScreen");
+
+            // User is signed out
+            // used this if else method on signing out funtionality
+          }
+        });
+      })
+      .catch((error) => {
+        // An error happened.
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        alert("unable to signout");
+      });
+  };
+
   return (
     <View style={globalStyles.container}>
       <View>
@@ -99,7 +130,7 @@ export default function UserScreen({ route, navigation }) {
         >
           <Modal
             animationType="fade"
-            transparent={false}
+            transparent={true}
             visible={isVisible}
             onRequestClose={() => {
               alert("Modal has now been closed.");
@@ -110,7 +141,7 @@ export default function UserScreen({ route, navigation }) {
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: "#00BCD4",
-                height: "80%",
+                height: "50%",
                 width: "80%",
                 borderRadius: 10,
                 borderWidth: 1,
@@ -134,7 +165,7 @@ export default function UserScreen({ route, navigation }) {
                     name="closecircle"
                     size={24}
                     color="white"
-                    style={{ right: -10, bottom: 40 }}
+                    style={{ right: -10, bottom: 10 }}
                   />
                 </TouchableOpacity>
               </View>
@@ -158,7 +189,7 @@ export default function UserScreen({ route, navigation }) {
                   <FontAwesome
                     name="user-circle-o"
                     size={24}
-                    color="white"
+                    color="grey"
                     style={{ marginHorizontal: -20, marginTop: 105 }}
                   />
                 </TouchableOpacity>
@@ -168,19 +199,6 @@ export default function UserScreen({ route, navigation }) {
                   placeholder="Name"
                   onChangeText={(userName) => globalUserModel.setName(userName)}
                   style={{ color: "#FFFFFF" }}
-                />
-                <Input
-                  placeholder="address@address.coom"
-                  onChangeText={(email) => globalUserModel.setEmail(email)}
-                  style={{ color: "#FFFFFF" }}
-                />
-                <Input
-                  placeholder="password"
-                  onChangeText={(password) =>
-                    globalUserModel.setPassword(password)
-                  }
-                  style={{ color: "#FFFFFF" }}
-                  secureTextEntry={true}
                 />
                 <TouchableOpacity
                   style={globalStyles.changeStatusText}
@@ -205,102 +223,106 @@ export default function UserScreen({ route, navigation }) {
       {/**end of the modal */}
       <View style={globalStyles.container}>
         <View style={{ flexDirection: "row", right: 25, marginVertical: -15 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("HomeScreen");
+            }}
+          >
             <Ionicons name="ios-chevron-back" size={34} color="#32AFB7" />
           </TouchableOpacity>
         </View>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={user}
           keyExtractor={(item) => item.uid}
           renderItem={({ item }) => {
             return (
               <SafeAreaView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <View>
-                    <Image
-                      source={{ uri: item.photoURL }}
-                      style={{
-                        width: 200,
-                        height: 200,
-                        borderRadius: 120,
-                        marginVertical: 10,
-                        backgroundColor: "white",
-                        alignSelf: "center",
-                      }}
-                    >
-                      {globalUserModel.setPhoto(item.photoURL)}
-                    </Image>
-                    <TouchableOpacity onPress={() => setVisible(true)}>
-                      <MaterialCommunityIcons
-                        name="account-edit-outline"
-                        size={38}
-                        color="#32AFB7"
-                        style={{
-                          alignSelf: "center",
-                          left: 50,
-                          bottom: 50,
-                        }}
-                      />
-                    </TouchableOpacity>
-
-                    <Text
-                      style={{ alignSelf: "center", fontSize: 18, bottom: 35 }}
-                    >
-                      {item.userName}
-                      {globalUserModel.setName(item.userName)}
-                    </Text>
-                    <Text
-                      style={{ fontSize: 15, bottom: 30, alignSelf: "center" }}
-                    >
-                      {item.email}
-                    </Text>
-                  </View>
-                  <View
+                <View>
+                  <Image
+                    source={{ uri: item.photoURL }}
                     style={{
-                      flexDirection: "row",
-                      right: 15,
-                      marginVertical: 35,
-                      marginHorizontal: 20,
-                    }}
-                  >
-                    <Feather name="calendar" size={24} color="black" />
-                    <Text style={{ fontSize: 20, left: 10 }}>My Bookings</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("BookingHistory");
-                      }}
-                      style={{ alignSelf: "flex-end" }}
-                    >
-                      <Ionicons
-                        name="ios-chevron-back"
-                        size={38}
-                        color="#32AFB7"
-                        style={{
-                          transform: [{ rotateY: "180deg" }],
-                          bottom: 4,
-                          right: -100,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    style={{
+                      width: 200,
+                      height: 200,
+                      borderRadius: 120,
+                      marginVertical: 10,
+                      backgroundColor: "white",
                       alignSelf: "center",
-                      backgroundColor: "#32AFB7",
-                      height: 50,
-                      width: 100,
-                      borderRadius: 40,
-                      marginVertical: 110,
                     }}
                   >
-                    <AntDesign
-                      name="logout"
-                      size={30}
-                      color="white"
-                      style={{ alignSelf: "center", marginVertical: 10 }}
+                    {globalUserModel.setPhoto(item.photoURL)}
+                  </Image>
+                  <TouchableOpacity onPress={() => setVisible(true)}>
+                    <MaterialCommunityIcons
+                      name="account-edit-outline"
+                      size={38}
+                      color="#32AFB7"
+                      style={{
+                        alignSelf: "center",
+                        left: 50,
+                        bottom: 50,
+                      }}
                     />
                   </TouchableOpacity>
-                </ScrollView>
+
+                  <Text
+                    style={{ alignSelf: "center", fontSize: 18, bottom: 35 }}
+                  >
+                    {item.userName}
+                    {globalUserModel.setName(item.userName)}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 15, bottom: 30, alignSelf: "center" }}
+                  >
+                    {item.email}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    right: 15,
+                    marginVertical: 35,
+                    marginHorizontal: 20,
+                  }}
+                >
+                  <Feather name="calendar" size={24} color="black" />
+                  <Text style={{ fontSize: 20, left: 10 }}>My Bookings</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("BookingHistory");
+                    }}
+                    style={{ alignSelf: "flex-end" }}
+                  >
+                    <Ionicons
+                      name="ios-chevron-back"
+                      size={38}
+                      color="#32AFB7"
+                      style={{
+                        transform: [{ rotateY: "180deg" }],
+                        bottom: 4,
+                        marginHorizontal: 105,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "center",
+                    backgroundColor: "#32AFB7",
+                    height: 50,
+                    width: 100,
+                    borderRadius: 40,
+                    marginVertical: 110,
+                  }}
+                  onPress={Signout}
+                >
+                  <AntDesign
+                    name="logout"
+                    size={30}
+                    color="white"
+                    style={{ alignSelf: "center", marginVertical: 10 }}
+                  />
+                </TouchableOpacity>
               </SafeAreaView>
             );
           }}

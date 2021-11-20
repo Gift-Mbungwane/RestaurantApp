@@ -12,6 +12,7 @@ import ConfirmBooking from "./components/screens/ConfirmBooking";
 import Main from "./components/screens/Main";
 import LoginScreen from "./components/screens/LoginScreen";
 import RegisterScreen from "./components/screens/RegisterScreen";
+import BookingDetails from "./components/screens/BookingDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ export default class App extends Component {
           <Stack.Screen name="ViewDetails" component={ViewDetails} />
           <Stack.Screen name="PreviewBooking" component={PreviewBooking} />
           <Stack.Screen name="ConfirmBooking" component={ConfirmBooking} />
+          <Stack.Screen name="BookingDetails" component={BookingDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     );

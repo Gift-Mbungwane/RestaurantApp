@@ -10,6 +10,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Button,
+  Dimensions,
 } from "react-native";
 import { globalStyles } from "../../styles/globalStyles";
 import {
@@ -21,7 +22,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { restaurants, restImages } from "../../api/Rstaurants";
+import ImageZoom from "react-native-image-pan-zoom";
 import { ScrollView } from "react-native-gesture-handler";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import globalUserModel from "../Model";
@@ -122,6 +123,34 @@ export default class ViewDetails extends React.Component<Props> {
             </View>
           </View>
           <Text style={globalStyles.headerTextRview}>What we offer</Text>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={this.state.menu}
+            keyExtractor={(item) => item.key}
+            renderItem={({ item }) => {
+              return (
+                <View style={{ margin: 10 }}>
+                  <Image
+                    style={globalStyles.image}
+                    source={{ uri: item.photoURL }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      left: 5,
+                      top: 5,
+                      alignSelf: "center",
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    {item.menu}
+                  </Text>
+                </View>
+              );
+            }}
+          />
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -132,27 +161,7 @@ export default class ViewDetails extends React.Component<Props> {
               <Text style={{ width: 300 }}>{description}</Text>
             </View>
           </ScrollView>
-          <View>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={this.state.menu}
-              keyExtractor={(item) => item.key}
-              renderItem={({ item }) => {
-                return (
-                  <View style={{ margin: 10 }}>
-                    <Image
-                      style={globalStyles.image}
-                      source={{ uri: item.photoURL }}
-                    />
-                    <Text style={{ fontSize: 16, fontWeight: "bold", left: 5 }}>
-                      {item.menu}
-                    </Text>
-                  </View>
-                );
-              }}
-            />
-          </View>
+
           <View style={globalStyles.confirmButton}>
             <TouchableOpacity
               onPress={() =>

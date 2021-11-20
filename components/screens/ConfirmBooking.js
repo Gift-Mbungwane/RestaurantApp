@@ -107,7 +107,7 @@ export default class ConfirmBooking extends Component {
           style={{
             borderRadius: 20,
             marginVertical: 80,
-            height: 550,
+            height: "100%",
             width: "100%",
             backgroundColor: "white",
             margin: 5,
