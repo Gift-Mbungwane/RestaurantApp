@@ -25,7 +25,13 @@ const auth = app.auth();
 const userCollection = db.collection("users");
 const bookingCollection = db.collection("booking");
 const realtimedb = app.database();
-const storage = app.storage();
+const storage = app.storage(); //"gs://restaurantbooking-328010.appspot.com"
+const storageRef = storage.ref();
+const imagesRef = storageRef.child("images");
+
+const fb = firebase.storage.TaskEvent.STATE_CHANGED;
+// var fileName = "space.jpg";
+// var spaceRef = imagesRef.child(fileName);
 
 export {
   db,
@@ -35,4 +41,7 @@ export {
   realtimedb,
   storage,
   bookingCollection,
+  storageRef,
+  imagesRef,
+  fb,
 };

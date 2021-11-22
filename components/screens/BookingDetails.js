@@ -123,7 +123,7 @@ export default class BookingDetails extends Component {
             <View
               style={{
                 flexDirection: "row",
-                right: 35,
+                marginHorizontal: 15,
                 alignSelf: "center",
                 top: 10,
               }}
@@ -134,7 +134,7 @@ export default class BookingDetails extends Component {
             <View
               style={{
                 flexDirection: "row",
-                right: 39,
+                marginHorizontal: 15,
                 alignSelf: "center",
                 top: 10,
               }}
@@ -146,7 +146,7 @@ export default class BookingDetails extends Component {
             <View
               style={{
                 flexDirection: "row",
-                right: 53,
+                marginHorizontal: 15,
                 alignSelf: "center",
                 top: 10,
               }}
@@ -157,7 +157,7 @@ export default class BookingDetails extends Component {
             <View
               style={{
                 flexDirection: "row",
-                right: 63,
+                marginHorizontal: 15,
                 alignSelf: "center",
                 top: 10,
               }}
@@ -173,7 +173,7 @@ export default class BookingDetails extends Component {
                 flexDirection: "row",
                 alignSelf: "center",
                 top: 10,
-                right: 53,
+                marginHorizontal: 15,
               }}
             >
               <Ionicons name="ios-time" size={24} color="#32AFB7" />
@@ -186,7 +186,7 @@ export default class BookingDetails extends Component {
                 flexDirection: "row",
                 alignSelf: "center",
                 top: 10,
-                right: 28,
+                marginHorizontal: 15,
               }}
             >
               <MaterialIcons name="date-range" size={24} color="#32AFB7" />

@@ -22,7 +22,14 @@ import { globalStyles } from "../../styles/globalStyles";
 import HomeScreen from "../screens/HomeScreen";
 import globalUserModel from "../Model";
 import * as ImagePicker from "expo-image-picker";
-import { auth, db, storage } from "../../database/firebase";
+import {
+  auth,
+  db,
+  imagesRef,
+  storage,
+  storageRef,
+  fb,
+} from "../../database/firebase";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -32,6 +39,8 @@ export default function UserScreen({ route, navigation }) {
   const [isVisible, setVisible] = useState(false);
   const [user, setUser] = useState(null);
   const [image, setImage] = useState("");
+  const [upload, setUpload] = useState(false);
+  const [photo, setPhoto] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -43,6 +52,7 @@ export default function UserScreen({ route, navigation }) {
         }
       }
     })();
+    uploadToStorage();
     fetchData();
   }, []);
 
@@ -56,9 +66,49 @@ export default function UserScreen({ route, navigation }) {
 
     console.log(result.uri);
 
-    if (!result.cancelled && image == "") {
+    if (!result.cancelled) {
       setImage(result.uri);
     }
+  };
+
+  const uploadToStorage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError("Network request failed!"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", image, true);
+      xhr.send(null);
+    });
+
+    const ref = storageRef.child(new Date().toISOString());
+    const snapshot = ref.put(blob);
+
+    snapshot.on(
+      fb,
+      () => {
+        setUploading(true);
+      },
+      (error) => {
+        setUploading(false);
+        console.log(error);
+        blob.close();
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then((url) => {
+          // setUploading(false);
+          setPhoto(url);
+          console.log("Download url : ", url);
+          blob.close();
+          return url;
+        });
+      }
+    );
   };
 
   const upDate = () => {
@@ -67,12 +117,14 @@ export default function UserScreen({ route, navigation }) {
       .collection("users")
       .doc(uid)
       .update({
-        photoURL: image,
+        photoURL: photo,
         userName: globalUserModel.userName,
       })
       .then(() => {
         setVisible(false);
-        const reference = storage.ref(image).put(`users/${uid}/${image}`);
+        // imagesRef.put(image);
+        //imagesRef.put(`images/${image}`);
+        // storageRef.putString(`images/${image}`);
       })
       .catch((error) => {
         alert("could not update this information");
@@ -185,7 +237,14 @@ export default function UserScreen({ route, navigation }) {
                     backgroundColor: "white",
                   }}
                 />
-                <TouchableOpacity onPress={pickImage}>
+                <TouchableOpacity
+                  onPress={() => {
+                    try {
+                      pickImage();
+                      uploadToStorage();
+                    } catch (error) {}
+                  }}
+                >
                   <FontAwesome
                     name="user-circle-o"
                     size={24}

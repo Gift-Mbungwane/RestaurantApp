@@ -5,6 +5,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
@@ -13,7 +14,12 @@ import { auth } from "../../database/firebase";
 import firebase from "firebase";
 
 const image = require("../../assets/Restaurant/loginscreen.jpg");
+
 export default class LoginScreen extends Component {
+  state = {
+    isLoading: false,
+  };
+
   constructor(props) {
     super(props);
   }
@@ -32,6 +38,7 @@ export default class LoginScreen extends Component {
 
         if (user) {
           navigate("HomeScreen");
+          // this.setState({ isLoading: false });
         } else {
           alert("no acount has been found");
         }
@@ -214,6 +221,14 @@ export default class LoginScreen extends Component {
                 />
               </View>
             </KeyboardAvoidingView>
+            <View>
+              {this.state.isLoading && (
+                <ActivityIndicator
+                  color={"#fff"}
+                  style={{ alignSelf: "center" }}
+                />
+              )}
+            </View>
             <View style={{ flexDirection: "row", marginHorizontal: 25 }}>
               <Text
                 style={{
@@ -224,11 +239,14 @@ export default class LoginScreen extends Component {
               >
                 Sign in
               </Text>
+
               <TouchableOpacity
                 onPress={() => {
                   try {
                     //navigate("HomeScreen");
+                    this.setState({ isloading: true });
                     this.Login();
+                    // <ActivityIndicator size="small" color="#32AFB7" />;
                   } catch (error) {
                     const erro = error.message;
                     alert("please check your email and password");

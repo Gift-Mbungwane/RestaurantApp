@@ -22,10 +22,6 @@ import {
 import globalUserModel from "../Model";
 
 export default class ConfirmBooking extends Component {
-  state = {
-    admin: [],
-  };
-
   constructor(props) {
     super(props);
   }
