@@ -65,7 +65,10 @@ export default class ConfirmBooking extends Component {
           imageURL: image,
           status: "pending",
         })
-        .then(() => navigate("HomeScreen"))
+        .then(() => {
+          alert("Your booking has been logged");
+          navigate("HomeScreen");
+        })
 
         // docRef.id;
         // console.log(docRef.id);

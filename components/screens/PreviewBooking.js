@@ -1,6 +1,7 @@
 import React, { useState, Component } from "react";
 import {
   View,
+  Platform,
   Text,
   FlatList,
   Image,
@@ -122,40 +123,18 @@ export default class PreviewBooking extends Component {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                padding: 24,
-                marginVertical: -5,
-              }}
-            >
-              <FontAwesome name="phone-square" size={34} color="white" />
-              <TextInput
-                multiline
-                placeholder="Phone no.: (+27) 0"
-                style={{
-                  borderRadius: 6,
-                  backgroundColor: "white",
-                  height: 35,
-                  color: "black",
-                  width: 120,
-                  marginHorizontal: 5,
-                }}
-                keyboardType="phone-pad"
-                onChangeText={(mobile) => globalUserModel.setMobile(mobile)}
-                value={globalUserModel.mobile}
-              />
+            <ScrollView>
               <View
                 style={{
                   flexDirection: "row",
                   padding: 24,
-                  marginVertical: -25,
+                  marginVertical: -5,
                 }}
               >
-                <FontAwesome5 name="clipboard-list" size={34} color="white" />
+                <FontAwesome name="phone-square" size={34} color="white" />
                 <TextInput
                   multiline
-                  placeholder="No. of Guests"
+                  placeholder="Phone no.: (+27) 0"
                   style={{
                     borderRadius: 6,
                     backgroundColor: "white",
@@ -165,15 +144,38 @@ export default class PreviewBooking extends Component {
                     marginHorizontal: 5,
                   }}
                   keyboardType="phone-pad"
-                  onChangeText={(guest) =>
-                    globalUserModel.setNumberOfGuest(guest)
-                  }
-                  value={globalUserModel.numberOfGuest}
+                  onChangeText={(mobile) => globalUserModel.setMobile(mobile)}
+                  value={globalUserModel.mobile}
                 />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    padding: 24,
+                    marginVertical: -25,
+                  }}
+                >
+                  <FontAwesome5 name="clipboard-list" size={34} color="white" />
+                  <TextInput
+                    multiline
+                    placeholder="No. of Guests"
+                    style={{
+                      borderRadius: 6,
+                      backgroundColor: "white",
+                      height: 35,
+                      color: "black",
+                      width: 120,
+                      marginHorizontal: 5,
+                    }}
+                    keyboardType="phone-pad"
+                    onChangeText={(guest) =>
+                      globalUserModel.setNumberOfGuest(guest)
+                    }
+                    value={globalUserModel.numberOfGuest}
+                  />
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </KeyboardAvoidingView>
-
           <View
             style={{
               flexDirection: "row",

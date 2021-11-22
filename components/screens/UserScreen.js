@@ -39,7 +39,7 @@ export default function UserScreen({ route, navigation }) {
   const [isVisible, setVisible] = useState(false);
   const [user, setUser] = useState(null);
   const [image, setImage] = useState("");
-  const [upload, setUpload] = useState(false);
+  // const [upload, setUpload] = useState(false);
   const [photo, setPhoto] = useState("");
 
   useEffect(() => {
@@ -52,7 +52,6 @@ export default function UserScreen({ route, navigation }) {
         }
       }
     })();
-    uploadToStorage();
     fetchData();
   }, []);
 
@@ -68,47 +67,37 @@ export default function UserScreen({ route, navigation }) {
 
     if (!result.cancelled) {
       setImage(result.uri);
-    }
-  };
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+          reject(new TypeError("Network request failed!"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", result.uri, true);
+        xhr.send(null);
+      });
 
-  const uploadToStorage = async () => {
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function () {
-        reject(new TypeError("Network request failed!"));
-      };
-      xhr.responseType = "blob";
-      xhr.open("GET", image, true);
-      xhr.send(null);
-    });
+      const ref = storageRef.child(new Date().toISOString());
+      const snapshot = (await ref.put(blob)).ref
+        .getDownloadURL()
+        .then((imageUrl) => {
+          setPhoto(imageUrl);
+          console.log(
+            imageUrl,
+            "this is setting the image too storage before 3"
+          );
 
-    const ref = storageRef.child(new Date().toISOString());
-    const snapshot = ref.put(blob);
-
-    snapshot.on(
-      fb,
-      () => {
-        setUploading(true);
-      },
-      (error) => {
-        setUploading(false);
-        console.log(error);
-        blob.close();
-        return;
-      },
-      () => {
-        snapshot.snapshot.ref.getDownloadURL().then((url) => {
-          // setUploading(false);
-          setPhoto(url);
-          console.log("Download url : ", url);
           blob.close();
-          return url;
         });
-      }
-    );
+
+      // snapshot.snapshot.ref.getDownloadURL().then((imageUrl) => {
+      //   console.log(imageUrl, "this is setting the image too storage before 2");
+      //   setPhoto(imageUrl);
+      // });
+    }
   };
 
   const upDate = () => {
@@ -121,10 +110,8 @@ export default function UserScreen({ route, navigation }) {
         userName: globalUserModel.userName,
       })
       .then(() => {
+        alert("your profile has been updated");
         setVisible(false);
-        // imagesRef.put(image);
-        //imagesRef.put(`images/${image}`);
-        // storageRef.putString(`images/${image}`);
       })
       .catch((error) => {
         alert("could not update this information");
@@ -229,7 +216,7 @@ export default function UserScreen({ route, navigation }) {
                 }}
               >
                 <Image
-                  source={{ uri: image }}
+                  source={{ uri: photo }}
                   style={{
                     width: 150,
                     height: 150,
@@ -237,14 +224,7 @@ export default function UserScreen({ route, navigation }) {
                     backgroundColor: "white",
                   }}
                 />
-                <TouchableOpacity
-                  onPress={() => {
-                    try {
-                      pickImage();
-                      uploadToStorage();
-                    } catch (error) {}
-                  }}
-                >
+                <TouchableOpacity onPress={pickImage}>
                   <FontAwesome
                     name="user-circle-o"
                     size={24}
