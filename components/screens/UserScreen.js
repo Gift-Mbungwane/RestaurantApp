@@ -37,6 +37,8 @@ const image = require("../../assets/Restaurant/register.jpg");
 
 export default function UserScreen({ route, navigation }) {
   const [isVisible, setVisible] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [submit, setSubmit] = useState(false);
   const [user, setUser] = useState(null);
   const [image, setImage] = useState("");
   // const [upload, setUpload] = useState(false);
@@ -66,6 +68,7 @@ export default function UserScreen({ route, navigation }) {
     console.log(result.uri);
 
     if (!result.cancelled) {
+      setSubmit(true);
       setImage(result.uri);
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -91,6 +94,7 @@ export default function UserScreen({ route, navigation }) {
           );
 
           blob.close();
+          setSubmit(false);
         });
 
       // snapshot.snapshot.ref.getDownloadURL().then((imageUrl) => {
@@ -102,6 +106,7 @@ export default function UserScreen({ route, navigation }) {
 
   const upDate = () => {
     const uid = auth?.currentUser?.uid;
+    setSubmit(true);
     return db
       .collection("users")
       .doc(uid)
@@ -110,10 +115,12 @@ export default function UserScreen({ route, navigation }) {
         userName: globalUserModel.userName,
       })
       .then(() => {
+        setSubmit(false);
         alert("your profile has been updated");
         setVisible(false);
       })
       .catch((error) => {
+        setSubmit(false);
         alert("could not update this information");
       });
   };
@@ -131,6 +138,7 @@ export default function UserScreen({ route, navigation }) {
   };
 
   const Signout = () => {
+    setUploading(true);
     auth
       .signOut()
       .then(() => {
@@ -140,13 +148,14 @@ export default function UserScreen({ route, navigation }) {
             // https://firebase.google.com/docs/reference/js/firebase.User
             const uid = user.uid;
             navigation.navigate("LoginScreen");
+            setUploading(false);
             // alert("account is still signed in");
 
             // ...
           } else {
             alert("you're now logged out");
             navigation.navigate("LoginScreen");
-
+            setUploading(false);
             // User is signed out
             // used this if else method on signing out funtionality
           }
@@ -156,6 +165,7 @@ export default function UserScreen({ route, navigation }) {
         // An error happened.
         const errorMessage = error.message;
         console.log(errorMessage);
+        setUploading(false);
         alert("unable to signout");
       });
   };
@@ -243,16 +253,24 @@ export default function UserScreen({ route, navigation }) {
                   style={globalStyles.changeStatusText}
                   onPress={upDate}
                 >
-                  <Text
-                    style={{
-                      alignSelf: "center",
-                      marginVertical: 10,
-                      color: "black",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Submit
-                  </Text>
+                  {!submit ? (
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                        marginVertical: 10,
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Submit
+                    </Text>
+                  ) : (
+                    <ActivityIndicator
+                      style={{ alignSelf: "center" }}
+                      color="black"
+                      size="large"
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -355,12 +373,20 @@ export default function UserScreen({ route, navigation }) {
                   }}
                   onPress={Signout}
                 >
-                  <AntDesign
-                    name="logout"
-                    size={30}
-                    color="white"
-                    style={{ alignSelf: "center", marginVertical: 10 }}
-                  />
+                  {!uploading ? (
+                    <AntDesign
+                      name="logout"
+                      size={30}
+                      color="white"
+                      style={{ alignSelf: "center", marginVertical: 10 }}
+                    />
+                  ) : (
+                    <ActivityIndicator
+                      size="large"
+                      color="black"
+                      style={{ alignSelf: "center" }}
+                    />
+                  )}
                 </TouchableOpacity>
               </SafeAreaView>
             );

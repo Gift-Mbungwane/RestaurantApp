@@ -7,7 +7,7 @@ export default class TimePickers extends Component {
   constructor() {
     super();
     this.state = {
-      time: "19:20",
+      time: "00:00",
     };
   }
 

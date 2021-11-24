@@ -5,6 +5,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
@@ -13,10 +14,15 @@ import { auth, db, realtimedb } from "../../database/firebase";
 
 const image = require("../../assets/Restaurant/register.jpg");
 export default class RegisterScreen extends Component {
+  state = {
+    uploading: false,
+  };
+
   constructor(props) {
     super(props);
   }
   Register() {
+    this.setState({ uploading: true });
     auth
       .createUserWithEmailAndPassword(
         globalUserModel.email,
@@ -31,18 +37,24 @@ export default class RegisterScreen extends Component {
           userName: globalUserModel.userName,
           email: user.email,
           password: globalUserModel.password,
+          photoURL:
+            "https://www.google.com/url?sa=i&url=https%3A%2F%2Ffindicons.com%2Fsearch%2Favatar&psig=AOvVaw1sEiZj4FJSN9RhgnlAWSrl&ust=1632779417317000&source=images&cd=vfe&ved=0CAkQjRxqFwoTCKDOlcbPnfMCFQAAAAAdAAAAABAD",
         });
+
+        this.setState({ uploading: false });
+        alert("Your account has been registered");
         // ...
-        user.updateProfile({
-          userName: globalUserModel.userName,
-          email: globalUserModel.email,
-          password: globalUserModel.password,
-        });
+        // user.updateProfile({
+        //   userName: globalUserModel.userName,
+        //   email: globalUserModel.email,
+        //   password: globalUserModel.password,
+        // });
         //
       })
       .catch((error) => {
         const errorMessage = error.message;
         // alert(errorMessage);
+        this.setState({ uploading: false });
         alert("This account is registered, please sign in");
       });
   }
@@ -120,6 +132,13 @@ export default class RegisterScreen extends Component {
                 />
               </View>
             </KeyboardAvoidingView>
+            {this.state.uploading && (
+              <ActivityIndicator
+                size="large"
+                style={{ alignSelf: "center" }}
+                color="white"
+              />
+            )}
             <View style={{ flexDirection: "row", marginHorizontal: 25 }}>
               <Text
                 style={{

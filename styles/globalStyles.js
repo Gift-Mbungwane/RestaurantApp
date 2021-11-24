@@ -52,7 +52,7 @@ export const globalStyles = StyleSheet.create({
     margin: 10,
   },
   image: {
-    width: 119,
+    width: 130,
     height: 120,
     borderRadius: 20,
     alignItems: "flex-start",

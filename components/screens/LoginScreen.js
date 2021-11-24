@@ -25,6 +25,7 @@ export default class LoginScreen extends Component {
   }
 
   Login() {
+    this.setState({ uploading: true });
     auth
       .signInWithEmailAndPassword(
         globalUserModel.email,
@@ -37,14 +38,17 @@ export default class LoginScreen extends Component {
         const { navigate } = this.props.navigation;
 
         if (user) {
+          this.setState({ uploading: false });
           navigate("HomeScreen");
           // this.setState({ isLoading: false });
         } else {
+          this.setState({ uploading: false });
           alert("no acount has been found");
         }
       })
       .catch((error) => {
         const errorMessage = error.message;
+        this.setState({ uploading: false });
         alert("Please check your network bandwith");
         //alert(errorMessage);
         //  alert("this account is not registered");
@@ -54,6 +58,8 @@ export default class LoginScreen extends Component {
   }
 
   Google() {
+    this.setState({ uploading: true });
+
     const provider = new firebase.auth.GoogleAuthProvider();
     auth
       .signInWithPopup(provider)
@@ -70,8 +76,10 @@ export default class LoginScreen extends Component {
         const { navigate } = this.props.navigation;
 
         if (user) {
+          this.setState({ uploading: false });
           navigate("HomeScreen");
         } else {
+          this.setState({ uploading: false });
           alert("no acount has been found");
         }
       })
@@ -83,11 +91,14 @@ export default class LoginScreen extends Component {
         const email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
+        alert("failed to sign in with google");
         // ...
       });
   }
 
   Facebook() {
+    this.setState({ uploading: true });
+
     const provider = new firebase.auth.FacebookAuthProvider();
     // provider.addScope("user_birthday");
 
@@ -105,18 +116,23 @@ export default class LoginScreen extends Component {
         const { navigate } = this.props.navigation;
 
         if (user) {
+          this.setState({ uploading: false });
+
           navigate("HomeScreen");
         } else {
+          this.setState({ uploading: false });
           alert("no acount has been found");
         }
       })
       .catch((error) => {
         // Handle error.
+        this.setState({ uploading: false });
         alert("failed to sign in with facebook");
       });
   }
 
   Apple() {
+    this.setState({ uploading: true });
     const provider = new firebase.auth.OAuthProvider("apple.com");
     auth
       .signInWithPopup(provider)
@@ -135,8 +151,10 @@ export default class LoginScreen extends Component {
         const { navigate } = this.props.navigation;
 
         if (user) {
+          this.setState({ uploading: false });
           navigate("HomeScreen");
         } else {
+          this.setState({ uploading: false });
           alert("no acount has been found");
         }
       })
@@ -148,6 +166,8 @@ export default class LoginScreen extends Component {
         const email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
+        this.setState({ uploading: false });
+        alert("failed to sign in with Apple");
 
         // ...
       });
@@ -221,14 +241,13 @@ export default class LoginScreen extends Component {
                 />
               </View>
             </KeyboardAvoidingView>
-            <View>
-              {this.state.isLoading && (
-                <ActivityIndicator
-                  color={"#fff"}
-                  style={{ alignSelf: "center" }}
-                />
-              )}
-            </View>
+            {this.state.uploading && (
+              <ActivityIndicator
+                size="large"
+                style={{ alignSelf: "center" }}
+                color="white"
+              />
+            )}
             <View style={{ flexDirection: "row", marginHorizontal: 25 }}>
               <Text
                 style={{

@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Modal, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  Modal,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { color } from "react-native-elements/dist/helpers";
 import {
   Ionicons,
@@ -22,6 +28,7 @@ import {
 import globalUserModel from "../Model";
 
 export default class ConfirmBooking extends Component {
+  state = { uploading: false };
   constructor(props) {
     super(props);
   }
@@ -44,7 +51,7 @@ export default class ConfirmBooking extends Component {
     } = this.props.route.params;
 
     const { navigate } = this.props.navigation;
-
+    this.setState({ uploading: true });
     return (
       db
         .collection("bookings")
@@ -66,6 +73,7 @@ export default class ConfirmBooking extends Component {
           status: "pending",
         })
         .then(() => {
+          this.setState({ uploading: false });
           alert("Your booking has been logged");
           navigate("HomeScreen");
         })
@@ -75,6 +83,7 @@ export default class ConfirmBooking extends Component {
 
         .catch((error) => {
           const errorMessage = error.message;
+          this.setState({ uploading: false });
           alert("we could not add the booking, try chacking your network");
         })
     );
@@ -232,30 +241,35 @@ export default class ConfirmBooking extends Component {
             onPress={() => {
               try {
                 this.upload();
-                //alert("you have successfully reserved a table");
-                // this.displayModal(false);
-                //navigate("HomeScreen");
               } catch (error) {
                 const errMess = error.message;
                 console.log(errMess);
-                alert("failed to upload booking information");
+                this.setState({ uploading: false });
+                alert("Please fill in all the required information");
               }
             }}
           >
-            <Text
-              style={{
-                alignSelf: "center",
-                fontWeight: "400",
-                marginVertical: 15,
-                fontSize: 24,
-                color: "white",
-              }}
-            >
-              Confirm
-            </Text>
+            {!this.state.uploading ? (
+              <Text
+                style={{
+                  alignSelf: "center",
+                  fontWeight: "400",
+                  marginVertical: 15,
+                  fontSize: 24,
+                  color: "white",
+                }}
+              >
+                Confirm
+              </Text>
+            ) : (
+              <ActivityIndicator
+                size="large"
+                style={{ alignSelf: "center" }}
+                color="black"
+              />
+            )}
           </TouchableOpacity>
         </View>
-        {/*  </Modal>*/}
       </ScrollView>
     );
   }

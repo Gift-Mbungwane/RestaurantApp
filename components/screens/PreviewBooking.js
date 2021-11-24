@@ -36,7 +36,7 @@ export default class PreviewBooking extends Component {
     isVisible: false,
     selected: new Date(),
     time: "00:00",
-    timeOut: "12:00",
+    timeOut: "00:00",
   };
   constructor(props) {
     super(props);
